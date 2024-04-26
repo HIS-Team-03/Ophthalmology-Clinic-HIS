@@ -1,0 +1,153 @@
+{
+	"info": {
+		"_postman_id": "b3e175c6-f4bd-4431-ab03-94e1ce25c0f5",
+		"name": "project test",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "34150538",
+		"_collection_link": "https://www.postman.com/hanahesham/workspace/hana-hesham/collection/34150538-b3e175c6-f4bd-4431-ab03-94e1ce25c0f5?action=share&source=collection_link&creator=34150538"
+	},
+	"item": [
+		{
+			"name": "get all doctors",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:5001/api/doctors",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"api",
+						"doctors"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get one doctor",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:5001/api/doctors/33",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"api",
+						"doctors",
+						"33"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "create doctor ",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"firstName\":\"khaled\", \n  \"lastName\": \"Badr\" , \n  \"email\" : \"hana_hesham@enppi.com\", \n  \"phone\":\"0110203202\", \n  \"address\": \"mokattaammm\"  , \n  \"specialization\": \"Internal medicine doctor\",\n  \"birthday\":\"14/07/2002\",\n\t\"password\" : \"khaled123\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5001/api/doctors",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"api",
+						"doctors"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "update doctor ",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:5001/api/doctors/33",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"api",
+						"doctors",
+						"33"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "delete doctor ",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:5001/api/doctors/33",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"api",
+						"doctors",
+						"33"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"firstName\":\"hana\", \r\n  \"lastName\": \"hesham\" , \r\n  \"email\" : \"kahledd@enppi.com\", \r\n  \"phone\":\"0110203202\", \r\n  \"address\": \"mokattaammm\"  , \r\n  \"specialization\": \"Internal medicine doctor\",\r\n  \"birthday\":\"14/07/2002\",\r\n\t\"password\" : \"khaled123\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5001/api/doctors/login",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"api",
+						"doctors",
+						"login"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
