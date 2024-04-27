@@ -118,11 +118,11 @@ const loginDoctor = asyncHandler(
 
             }
              else{
-            res.status(401);
+            res.status(401).json({"message" : "Wrong Credentials"});
             throw new Error("email or password is not valid"); }
         }
         else{
-            res.status(401);
+            res.status(401).json({"message" : "Wrong Credentials"});
             throw new Error("email or password is not valid");
 
         }
