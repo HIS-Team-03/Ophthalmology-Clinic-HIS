@@ -1,4 +1,4 @@
-when yuo download the repo
+when you download the repo
 
 run "npm insall" in your terminal to update the node-modules and package.json
 
