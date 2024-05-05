@@ -22,7 +22,12 @@ const createDoctor = asyncHandler( async(req,res)=>{
     console.log("the request body is ", req.body );
 
     const { firstName, lastName , email, phone, address , specialization, birthday , password } = req.body;
-
+    //edit nw
+    const createdDoctor = await DoctorModel.findOne({email});
+    if(createdDoctor){
+        res.json({"email_exists":"true"})
+    }
+    //end of edit
     if (!firstName || !lastName || !email || !phone || !address || !specialization || !birthday || !password) {
             res.status(400);
             // res.json({"err message":"all field me7tageenha 3aaaaash" })

@@ -22,6 +22,7 @@ import Register from "views/examples/Register.js";
 import Login from "views/examples/Login.js";
 import Tables from "views/examples/Tables.js";
 import Icons from "views/examples/Icons.js";
+import DoctorCreateProfile from "views/examples/DoctorCreateProfile";
 
 var routes = [
   {
@@ -39,6 +40,7 @@ var routes = [
     layout: "/admin",
   },
   {
+<<<<<<< Updated upstream
     path: "/maps",
     name: "Maps",
     icon: "ni ni-pin-3 text-orange",
@@ -50,6 +52,12 @@ var routes = [
     name: "User Profile",
     icon: "ni ni-single-02 text-yellow",
     component: <Profile />,
+=======
+    path: "/Doctors",
+    name: "Doctors",
+    icon: "ni ni-badge",
+    component: <DoctorCreateProfile />,
+>>>>>>> Stashed changes
     layout: "/admin",
   },
   {

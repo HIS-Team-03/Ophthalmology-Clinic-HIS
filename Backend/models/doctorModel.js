@@ -20,6 +20,7 @@ const doctorSchema = mongoose.Schema(
     email: {
       type: String,
       required: [true, "Please add the doctor email address"],
+      unique: [true,"Email address already used"],
     },
     phone: {
       type: String,
