@@ -1,6 +1,7 @@
 const Patient = require('../models/patientModel');
-
+const sendEmail = require('../utilits/mailer');
 exports.getAllPatients = async (req, res, next) => {
+    console.log("get all patients");
     const patients = await Patient.find();
     res.status(200).json({
         numPatients: patients.length,
@@ -28,13 +29,14 @@ res.status(200).json({
 
 
 exports.createPatient = async (req, res, next) => {
-    console.log("create",req.body);
     try{
-    const newpatient = await Patient.create(req.body);
+    const newPatient = await Patient.create(req.body);
+    // send username and password to the patient's email
+    await sendEmail(newPatient.email, newPatient.name, newPatient.password);
     res.status(201).json({
         status : 'success',
         data:{
-             newpatient
+             newPatient
             }
     });
     }
@@ -55,6 +57,8 @@ exports.createPatient = async (req, res, next) => {
     };
 // 6635bf7f486b6a6c0c808038
 exports.updatePatient = async (req, res, next) => {
+    console.log("update");
+
    try {
        const patient = await Patient.findByIdAndUpdate(req.params.id, req.body, {
            new: true,
@@ -96,3 +100,4 @@ exports.deletePatient = async (req, res ,next) => {
         ``
         }
 }
+

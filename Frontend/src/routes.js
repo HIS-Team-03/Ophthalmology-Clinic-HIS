@@ -5,6 +5,8 @@ import Maps from "views/examples/Maps.js";
 import Login from "views/examples/Login.js";
 import Tables from "views/examples/Tables.js";
 import Icons from "views/examples/Icons.js";
+import Register from "./views/examples/Register";
+import PatientProfile from "./views/examples/PatientProfile";
 
 var routes = [
   {
@@ -18,7 +20,7 @@ var routes = [
     path: "/Patients",
     name: "Patients",
     icon: "ni ni-ambulance",
-    component: <Tables />,
+    component: <PatientProfile />,
     layout: "/admin",
   },
   {
@@ -40,7 +42,7 @@ var routes = [
     path: "/Prescription",
     name: "Prescription",
     icon: "ni ni-single-copy-04",
-    component: <Tables />,
+    component: <Icons />,
     layout: "/admin",
   },
   {

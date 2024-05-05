@@ -13,6 +13,19 @@ const patientscheme = new mongoose.Schema({
                 return validator.isAlpha(val.split(' ').join(''));
             },
             message: 'A patient name must only contain characters'
+            }
+    },
+    username: {
+        type: String,
+        required: [true, 'A user must have a username'],
+        unique: true,
+        maxlength: [20, 'A user name must have less or equal than 20 characters'],
+        minlength: [5, 'A user name must have more or equal than 10 characters'],
+        validate: {
+            validator: function (val) {
+                return validator.isAlphanumeric(val);
+            },
+            message: 'A patient username must only contain characters and numbers'
         }
     },
     age: {
