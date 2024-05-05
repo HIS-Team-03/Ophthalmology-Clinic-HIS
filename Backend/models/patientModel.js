@@ -107,7 +107,7 @@ if(!this.isModified('password')) return next();
 //     }
 // }
 
-// // Call the function
+// Call the function
 // saveTestPatient();
 
 module.exports = Patient;

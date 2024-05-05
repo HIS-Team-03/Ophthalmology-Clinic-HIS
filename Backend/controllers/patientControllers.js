@@ -28,6 +28,7 @@ res.status(200).json({
 
 
 exports.createPatient = async (req, res, next) => {
+    console.log("create",req.body);
     try{
     const newpatient = await Patient.create(req.body);
     res.status(201).json({
@@ -52,7 +53,7 @@ exports.createPatient = async (req, res, next) => {
         }
     }
     };
-
+// 6635bf7f486b6a6c0c808038
 exports.updatePatient = async (req, res, next) => {
    try {
        const patient = await Patient.findByIdAndUpdate(req.params.id, req.body, {
@@ -79,3 +80,19 @@ exports.updatePatient = async (req, res, next) => {
    }
 
 };
+
+exports.deletePatient = async (req, res ,next) => {
+    try {
+        await Patient.findByIdAndDelete(req.params.id, req.body);
+        res.status(204).json({
+            status: 'success',
+            data: null
+        });
+    }catch (err){
+        res.status(400).json({
+                status: 'error',
+                message: err.message
+            })
+        ``
+        }
+}
