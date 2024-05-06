@@ -7,6 +7,7 @@ import Tables from "views/examples/Tables.js";
 import Icons from "views/examples/Icons.js";
 import DoctorCreateProfile from "views/examples/DoctorCreateProfile";
 import PatientCreateHeader from "./components/Headers/PatientCreateHeader";
+import PatientTable from "views/examples/PatientTable";
 import PatientCreateProfile from "views/examples/PatientCreateProfile";
 
 var routes = [
@@ -22,6 +23,13 @@ var routes = [
     name: "Patients",
     icon: "ni ni-ambulance",
     component: <PatientCreateProfile />,
+    layout: "/admin",
+  },
+  {
+    path: "/Patientslist",
+    name: "PatientsList",
+    icon: "ni ni-ambulance",
+    component: <PatientTable />,
     layout: "/admin",
   },
   {
