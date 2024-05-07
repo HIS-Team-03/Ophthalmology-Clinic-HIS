@@ -40,14 +40,19 @@ const PatientTable = () => {
 
 const deletePatient = async (id) => {
   // Prompt the user to confirm the deletion
+  if (!id) {
+    console.error("Attempted to delete with undefined ID");
+    return;
+} 
   if (window.confirm("Are you sure you want to delete this patient?")) {
       try {
-          await axios.delete(`http://localhost:5001/api/v1/patients/${id}`);
+          const response = await axios.delete(`http://localhost:5001/api/v1/patients/${id}`);
           fetchPatients(); // Refresh the list after successful deletion
           alert("Patient successfully deleted."); // Optional: confirm deletion
+          console.log("Deletion successful: ", response.data);
       } catch (error) {
           console.error("Failed to delete the patient:", error);
-          alert("Failed to delete the patient."); // Inform the user of an error if deletion fails
+          alert(`Failed to delete the patient: ${error.response?.data?.message || error.message}`);
       }
   } else {
       // If user cancels, you can alert or just ignore
@@ -69,7 +74,7 @@ const deletePatient = async (id) => {
               <Table className="align-items-center table-flush" responsive>
                 <thead className="thead-light">
                   <tr>
-                    <th scope="col">Patient ID</th>
+                    <th scope="col">Patient </th>
                     <th scope="col">Picture</th>
                     <th scope="col">Patient Name</th>
                     <th scope="col">Phone Number</th>

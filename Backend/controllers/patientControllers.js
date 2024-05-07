@@ -123,17 +123,22 @@ exports.updatePatient = async (req, res, next) => {
 
 exports.deletePatient = async (req, res ,next) => {
     try {
-        await Patient.findByIdAndDelete(req.params.id, req.body);
+        const patient = await Patient.findById(req.params.id);
+        if (!patient) {
+            return res.status(404).json({
+                status: 'fail',
+                message: 'No patient found with that ID'
+            });
+        }
+        await patient.remove();
         res.status(204).json({
             status: 'success',
             data: null
         });
-    }catch (err){
-        res.status(400).json({
-                status: 'error',
-                message: err.message
-            })
-        ``
-        }
-}
-
+    } catch (err) {
+        res.status(500).json({
+            status: 'error',
+            message: 'Server error: ' + err.message
+        });
+    }
+};
