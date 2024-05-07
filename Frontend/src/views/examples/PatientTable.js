@@ -4,6 +4,8 @@ import {
   Card, CardHeader, CardFooter, Table, Container, Row,
   DropdownMenu, DropdownItem, UncontrolledDropdown, DropdownToggle
 } from "reactstrap";
+import { Link } from 'react-router-dom';
+import { Button } from "reactstrap";
 import PatientHeader from "components/Headers/PatientHeader";  // Ensure this path is correct
 
 const PatientTable = () => {
@@ -69,6 +71,12 @@ const deletePatient = async (id) => {
           <div className="col">
             <Card className="shadow">
               <CardHeader className="border-0">
+              <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                  <h3 className="mb-0">Patient List</h3>
+                  <Link to={'/admin/Patients'}>
+                  <Button color="primary">Add Patient</Button>
+                  </Link>
+              </div>
                 <h3 className="mb-0">Patient List</h3>
               </CardHeader>
               <Table className="align-items-center table-flush" responsive>

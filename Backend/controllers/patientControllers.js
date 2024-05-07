@@ -121,7 +121,7 @@ exports.updatePatient = async (req, res, next) => {
 
 };
 
-exports.deletePatient = async (req, res ,next) => {
+exports.deletePatient = async (req, res, next) => {
     try {
         const patient = await Patient.findById(req.params.id);
         if (!patient) {
@@ -130,7 +130,7 @@ exports.deletePatient = async (req, res ,next) => {
                 message: 'No patient found with that ID'
             });
         }
-        await patient.remove();
+        await Patient.findByIdAndDelete(req.params.id);
         res.status(204).json({
             status: 'success',
             data: null
