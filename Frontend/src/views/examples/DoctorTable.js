@@ -37,10 +37,9 @@ const DoctorTable = () => {
 
   const editDoctor = (id) =>{
    console.log("khaledd shrerrrrr")
-      return <DoctorEditProfile id={id} />;
+      
 
-   window.location.href = "http://localhost:3000/admin/EditDoctor"
-  // return <DoctorEditProfile id={id} />;
+   window.location.href = `http://localhost:3000/admin/EditDoctor/${id}`
   // return <DoctorEditProfile id={id} />;
 
   }

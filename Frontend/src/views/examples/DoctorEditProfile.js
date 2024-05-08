@@ -17,8 +17,9 @@
 */
 
 // reactstrap components
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
+
 
 
 import {
@@ -36,22 +37,46 @@ import {
   // core components
 //   import UserHeader from "components/Headers/UserHeader.js";
   import DoctorCreateHeader from "components/Headers/DoctorCreateHeader";
-  const DoctorEditProfile = ({ id }) => {
-
-    console.log("ID:", id);
+  const DoctorEditProfile = () => {
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const [firstname, setFirstName] = useState("khaledddd");
+    const [firstname, setFirstName] = useState("");
     const [lastname, setLastName] = useState("");
     const [phone, setPhone] = useState("");
     const [address, setAddress] = useState("");
     const [specialization, setSpecialization] = useState("");
     const [birthday, setBirthday] = useState("");
 
+    const url = window.location.href;
+    const id = url.substring(url.lastIndexOf('/') + 1);
+    console.log("id: ",id); // This will log the id passed in the URL
+
+    useEffect(() => {
+      populateData();
+    }, []);
+
+    
+    const populateData = async ()=>{
+      const back_url = `http://localhost:5001/api/doctors/${id}`
+      const response = await axios.get(back_url);
+      console.log("email:  ",response.data.email)
+      setFirstName(response.data.firstName)
+      setLastName(response.data.lastName)
+      setEmail(response.data.email)
+      setPassword(response.data.password)
+      setPhone(response.data.phone)
+      setAddress(response.data.address)
+      setSpecialization(response.data.specialization)
+      setBirthday(response.data.birthday)
+    }
+    
+
+    
+
     const handleEdit = async () => {
         try{
-            const url = "http://localhost:5001/api/doctors"; // Backend API endpoint
+            const url = `http://localhost:5001/api/doctors/${id}`; // Backend API endpoint
             const data = {
                 email: email,
                 password: password,
@@ -63,20 +88,14 @@ import {
                 birthday: birthday,
             };
             // Send POST request to the backend API
-            const response = await axios.post(url, data);
+            const response = await axios.put(url, data);
 
-            //edit nw
-            if(response.data.email_exists === "true"){
-              // window.location.href = "http://localhost:3000/admin/Doctors";
-              window.alert("emai metkarar");
-              return;
-            }
-            //end edit
+            
 
             // Handle the response
-            console.log("Created Successfully:", response.data);
-            // window.location.href = "http://localhost:3000/admin/Doctors"; //8aleban hane7tagha te7arakna le el next page
-            window.alert("Created Successfully");
+            console.log("updated Successfully:", response.data);
+            window.alert("updated Successfully");
+            window.location.href = "http://localhost:3000/admin/Doctorslist";
         }catch (error) {
             // Handle errors
             // console.error("Wrong Credentials", error.message);
@@ -109,7 +128,7 @@ import {
                 <CardBody>
                   <Form>
                     <h6 className="heading-small text-muted mb-4">
-                      khaleddddd shrerr awe
+                      Doctor information
                     </h6>
                     <div className="pl-lg-4">
                       <Row>
