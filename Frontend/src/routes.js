@@ -6,6 +6,7 @@ import Login from "views/examples/Login.js";
 import Tables from "views/examples/Tables.js";
 import Icons from "views/examples/Icons.js";
 import DoctorCreateProfile from "views/examples/DoctorCreateProfile";
+import DoctorTable from "./views/examples/DoctorTable";
 
 var routes = [
   {
@@ -23,13 +24,21 @@ var routes = [
     layout: "/admin",
   },
   {
-    path: "/Doctors",
-    name: "Doctors",
+    path: "/CreateDoctor",
+    name: "Create Doctor",
     icon: "ni ni-badge",
     component: <DoctorCreateProfile />,
     layout: "/admin",
    
   },
+      {
+    path: "/Doctorslist",
+    name: "Doctors List",
+    icon: "ni ni-badge",
+    component: <DoctorTable />,
+    layout: "/admin",
+  },
+
   {
     path: "/Appointments",
     name: "Appointment",
