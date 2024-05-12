@@ -7,6 +7,7 @@ import { Container } from "reactstrap";
 import AdminNavbar from "components/Navbars/AdminNavbar.js";
 import AdminFooter from "components/Footers/AdminFooter.js";
 import Sidebar from "components/Sidebar/Sidebar.js";
+import Chatbot from "components/Footers/chatbot.js";
 
 import routes from "routes.js";
 
@@ -66,6 +67,7 @@ const Admin = (props) => {
         </Routes>
         <Container fluid>
           <AdminFooter />
+          <Chatbot />
         </Container>
       </div>
     </>
