@@ -35,7 +35,7 @@ const DoctorListHeader = ({ setSearch, searchPatients, totalPatients }) => {
                     <Row>
                       <div className="col">
                         <CardTitle tag="h5" className="text-uppercase text-muted mb-0">
-                          Total Patients
+                          Total Doctors
                         </CardTitle>
                         <span className="h2 font-weight-bold mb-0">{totalPatients}</span>
                       </div>

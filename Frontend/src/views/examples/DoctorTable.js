@@ -44,6 +44,11 @@ const DoctorTable = () => {
 
   }
 
+  const showDoctor = (id) =>{
+    console.log("hana shereeera")
+    window.location.href = `http://localhost:3000/admin/SeeDoctor/${id}`
+  }
+
 
 
 
@@ -73,8 +78,7 @@ const DoctorTable = () => {
                 <thead className="thead-light">
                   <tr>
                     <th scope="col">Doctor </th>
-                    <th scope="col">First Name</th>
-                    <th scope="col">Last Name</th>
+                    <th scope="col">Name</th>
                     <th scope="col">Email</th>
                     <th scope="col">Phone</th>
                     <th scope="col">address</th>
@@ -95,8 +99,7 @@ const DoctorTable = () => {
                       {/*    className="rounded-circle"*/}
                       {/*  />*/}
                       {/*</td>*/}
-                      <td>{doctor.firstName}</td>
-                      <td>{doctor.lastName}</td>
+                      <td onClick={()=>showDoctor(doctor._id)} style={{ textDecoration: 'underline', color: 'grey', cursor: 'pointer' }}>{doctor.firstName +" "+ doctor.lastName}</td>
                       <td>{doctor.email}</td>
                       <td>{doctor.phone}</td>
                       <td>{doctor.address}</td>
