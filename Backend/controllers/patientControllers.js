@@ -67,8 +67,15 @@ res.status(200).json({
 exports.createPatient = async (req, res, next) => {
     try{
     const newPatient = await Patient.create(req.body);
-    // send username and password to the patient's email
-    await sendEmail(newPatient.email, newPatient.name, newPatient.password);
+    const {email, username, password,name} = newPatient;
+
+    // check if the email is already exist
+    console.log("checkinggg email");
+    console.log("newPatient");
+    console.log("email",email);
+    await sendEmail(email, username, password,name);
+    console.log("email sent")
+
     res.status(201).json({
         status : 'success',
         data:{

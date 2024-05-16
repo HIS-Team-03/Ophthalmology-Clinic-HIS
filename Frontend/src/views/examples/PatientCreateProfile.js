@@ -3,9 +3,17 @@ import PatientCreateHeader from "../../components/Headers/PatientCreateHeader";
 import {useState} from "react";
 import {Button, Card, CardBody, CardHeader, Col, Container, Form, FormGroup, Input, Row} from "reactstrap";
 import './PatientProfile.css';
+
+
 import axios from "axios";
 
-const PatientCreateProfile = () => {
+
+// TODO : Add the following fields to the form and handle the submission of the form to create a new patient
+ // 1. add file upload
+// 2. add a field for the doctor name
+// 3. add show password button
+
+const PatientCreateProfile = ( {type="Create"}) => {
 
     const [firstname, setFirstName] = useState("");
     const [lastname, setLastName] = useState("");
@@ -21,7 +29,28 @@ const PatientCreateProfile = () => {
     const [diabetes, setDiabetes] = useState(false);
     const [anySurgeries, setAnySurgeries] = useState(false);
     const [eyeHealthHistory, setEyeHealthHistory] = useState('');
+    const [showPassword, setShowPassword] = useState(false);
 
+    const toggleShowPassword = () => {
+        setShowPassword(!showPassword);
+    };
+
+    const resetForm = () => {
+        setFirstName("");
+        setLastName("");
+        setUsername("");
+        setEmail("");
+        setPassword("");
+        setConfirmPassword("");
+        setAddress("");
+        setPhone("");
+        setBirthday("");
+        setMedicalHistory("");
+        setHeartDisease(false);
+        setDiabetes(false);
+        setAnySurgeries(false);
+        setEyeHealthHistory("");
+    }
     function calculateAge(birthday) {
         const birthDate = new Date(birthday);
         const today = new Date();
@@ -32,39 +61,28 @@ const PatientCreateProfile = () => {
         }
         return age;
     }
-    // const handleCreatePatient = async () => {
-    //     try{
-    //         const url = 'http://localhost:5001/api/v1/patients/';
-    //         const age = calculateAge(birthday);
-    //         const name = `${firstname} ${lastname}`
-    //         const data = {
-    //             name,
-    //             username,
-    //             age,
-    //             email,
-    //             address,
-    //             phoneNumber: phone,
-    //             medicalHistory,
-    //             heartDisease,
-    //             diabetes,
-    //             anySurgeries,
-    //             eyeHealthHistory,
-    //             password,
-    //             confirmPassword,
-    //         }
-    //         const response = await axios.post(url, data);
-    //
-    //
-    //
-    //     }
-    //     catch (error) {
-    //         console.log(error);
-    //     }
-    // }
+
+
     const handleCreatePatient = async () => {
         const age = calculateAge(birthday);
-        const name = `${firstname} ${lastname}`
-        try{
+        const name = `${firstname} ${lastname}`;
+
+        // Validate form inputs
+        if (!name || !username || !age || !email || !address || !phone || !password || !confirmPassword) {
+            // Provide user feedback for invalid inputs
+            window.alert("Please fill in all required fields.");
+            return;
+        }
+        if (password !== confirmPassword) {
+            // Provide user feedback for invalid inputs
+            window.alert("Passwords do not match.");
+            return;
+        }
+
+
+
+
+        try {
             const response = await fetch('http://localhost:5001/api/v1/patients', {
                 method: 'POST',
                 headers: {
@@ -84,14 +102,82 @@ const PatientCreateProfile = () => {
                     eyeHealthHistory,
                     password,
                     confirmPassword,
+                    doctorName: "Dr. Ahmed",
                 }),
             });
             const responseData = await response.json();
+            // if(response.data.email_exists === "true"){
+            //     window.alert("Email already exists. Please use a different email.");
+            //     return;
+            // }
+            // if(response.data.username_exists === "true"){
+            //     window.alert("Username already exists. Please use a different username.");
+            //     return;
+            // }
             console.log(responseData);
-        }
-        catch (error) {
+            if (response.data.status === "success"){
+                window.alert("Patient created successfully.");
+            }
+            else {
+                window.alert("Failed to create patient.");
+            }
+            // resetForm();
+        } catch (error) {
             console.log(error);
+            window.alert("Failed to create patient.");
         }
+    }
+
+    const handleUpdatePatient = async () => {
+const age = calculateAge(birthday);
+        const name = `${firstname} ${lastname}`;
+
+        // Validate form inputs
+        if (password !== confirmPassword) {
+            // Provide user feedback for invalid inputs
+            window.alert("Passwords do not match.");
+            return;
+        }
+        try {
+            const response = await fetch('http://localhost:5001/api/v1/patients', {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    name,
+                    username,
+                    age,
+                    email,
+                    address,
+                    phoneNumber: phone,
+                    medicalHistory,
+                    heartDisease,
+                    diabetes,
+                    anySurgeries,
+                    eyeHealthHistory,
+                    password,
+                    confirmPassword,
+                    doctorName: "Dr. Ahmed",
+                }),
+            });
+            const responseData = await response.json();
+            // if(response.data.email_exists === "true"){
+            //     window.alert("Email already exists. Please use a different email.");
+            //     return;
+            // }
+            // if(response.data.username_exists === "true"){
+            //     window.alert("Username already exists. Please use a different username.");
+            //     return;
+            // }
+            console.log(responseData);
+            window.alert("Patient updated successfully.");
+            resetForm();
+        } catch (error) {
+            console.log(error);
+            window.alert("Failed to update patient.");
+        }
+
     }
 
 
@@ -100,7 +186,7 @@ const PatientCreateProfile = () => {
       <>
         <PatientCreateHeader />
         {/* Page content */}
-        <Container className="mt--7" fluid>
+        <Container className="mt--7 " fluid >
           <Row>
             <Col className="order-xl-1" xl="8">
               <Card className="bg-secondary shadow">
@@ -205,38 +291,46 @@ const PatientCreateProfile = () => {
                                 >
                                     Password
                                 </label>
-                                <Input
-                                    className="form-control-alternative"
-                                    id="input-password"
-                                    placeholder="*********"
-                                    type="password"
-                                    value={password}
-                                    onChange={(e) => setPassword(e.target.value)}
-                                />
+                                <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
+                                    <Input
+                                        className="form-control-alternative"
+                                        id="input-password"
+                                        placeholder="*********"
+                                        type={showPassword ? "text" : "password"}
+                                        value={password}
+                                        onChange={(e) => setPassword(e.target.value)}
+                                        style={{flex: 1}}
+                                    />
+                                </div>
                             </FormGroup>
                         </Col>
-                        <Col lg="6">
-                            <FormGroup>
-                                <label
-                                    className="form-control-label"
-                                    htmlFor="input-confirm-password"
-                                >
-                                    Confirm Password
-                                </label>
-                                <Input
-                                    className="form-control-alternative"
-                                    id="input-confirm-password"
-                                    placeholder="*********"
-                                    type="password"
-                                    value={confirmPassword}
-                                    onChange={(e) => setConfirmPassword(e.target.value)}
-                                />
-                            </FormGroup>
-                        </Col>
+                          <Col lg="6">
+                              <FormGroup>
+                                  <label
+                                      className="form-control-label"
+                                      htmlFor="input-confirm-password"
+                                  >
+                                      Confirm Password
+                                  </label>
+                                  <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
+                                      <Input
+                                          className="form-control-alternative"
+                                          id="input-confirm-password"
+                                          placeholder="*********"
+                                          type={showPassword ? "text" : "password"}
+                                          value={confirmPassword}
+                                          onChange={(e) => setConfirmPassword(e.target.value)}
+                                      />
+                                      <Button onClick={toggleShowPassword} size="sm" style={{marginLeft: '10px'}}>
+                                          {showPassword ? "Hide Password" : "Show Password"}
+                                      </Button>
+                                  </div>
+                              </FormGroup>
+                          </Col>
                       </Row>
 
-                      <Row>
-                        <Col lg="6">
+                        <Row>
+                            <Col lg="6">
                           <FormGroup>
                             <label
                                 className="form-control-label"
@@ -408,7 +502,7 @@ const PatientCreateProfile = () => {
                                     size="l"
                                     onClick={handleCreatePatient}
                                 >
-                                    Create Patient
+                                    {type === "Create"? "Create Patient" : "Update Patient"}
                                 </Button>
                             </Col>
                         </Row>
