@@ -21,8 +21,8 @@ root.render(
       {<Route path="/admin/*" element={<AdminLayout />} />}
       {<Route path="/auth/*" element={<AuthLayout />} />}
       {<Route path="/admin/EditDoctor/*" element={<DoctorEditProfile/>} />}
-      {<Route path="/admin/SeeDoctor/*" element={<DoctorSeeProfile/>} />}
-
+      {/* {<Route path="/admin/SeeDoctor/*" element={<DoctorSeeProfile/>} />} */}  
+       { /* incomment el foo2 we balash arraf */}
     </Routes>
   </BrowserRouter>
 );

@@ -37,6 +37,10 @@ import {
   // core components
 //   import UserHeader from "components/Headers/UserHeader.js";
   import DoctorCreateHeader from "components/Headers/DoctorCreateHeader";
+import PatientCreateHeader from "components/Headers/PatientCreateHeader";
+import AdminNavbar from "components/Navbars/AdminNavbar";
+import Sidebar from "components/Sidebar/Sidebar";
+import Footer from "components/Footers/AdminFooter";
   const DoctorSeeProfile = () => {
 
     const [email, setEmail] = useState("");
@@ -105,233 +109,82 @@ import {
     };
 
 
-
     return (
       <>
-        <DoctorCreateHeader />
-        {/* Page content */}
-        <Container className="mt--7" fluid>
+      {/* <AdminNavbar/> */}
+      {/* <Sidebar/> */}
+      <PatientCreateHeader />
+      <Container className="mt--7 " fluid >
           <Row>
-            <Col className="order-xl-2 mb-5 mb-xl-0" xl="4">
-              {/*  */}
-            </Col>
-            <Col className="order-xl-1" xl="8">
-              <Card className="bg-secondary shadow">
-                <CardHeader className="bg-white border-0">
-                  <Row className="align-items-center">
-                    <Col xs="8">
-                      <h3 className="mb-0">My account</h3>
-                    </Col>
-
-                  </Row>
-                </CardHeader>
-                <CardBody>
-                  <Form>
-                    <h6 className="heading-small text-muted mb-4">
-                      Doctor information
-                    </h6>
-                    <div className="pl-lg-4">
-                      <Row>
-                        <Col lg="6">
-                        <FormGroup>
-                            <label
-                              className="form-control-label"
-                              htmlFor="input-first-name"
-                            >
-                              First name
-                            </label>
-                            <Input
-                              className="form-control-alternative"
-                              id="input-firstname"
-                              placeholder="First name"
-                              type="text"
-                              value={firstname}
-                              // value={"khaledddd"}
-                              onChange={(e) => setFirstName(e.target.value)}
-                            />
-                          </FormGroup>
-                        </Col>
-                        <Col lg="6">
-                        <FormGroup>
-                            <label
-                              className="form-control-label"
-                              htmlFor="input-last-name"
-                            >
-                              Last name
-                            </label>
-                            <Input
-                              className="form-control-alternative"
-                              id="input-lastname"
-                              placeholder="Last name"
-                              type="text"
-                              value={lastname}
-                              onChange={(e) => setLastName(e.target.value)}
-                            />
-                          </FormGroup>
-
-                        </Col>
-                      </Row>
-                      <Row>
-                        <Col lg="6">
-                        <FormGroup>
-                            <label
-                              className="form-control-label"
-                              htmlFor="input-email"
-                            >
-                              Email address
-                            </label>
-                            <Input
-                              className="form-control-alternative"
-                              id="input-email"
-                              placeholder="name@example.com"
-                              type="email"
-                              value={email}
-                              onChange={(e) => setEmail(e.target.value)}
-                            />
-                          </FormGroup>
-                        </Col>
-                        <Col lg="6">
-                        <FormGroup>
-                            <label
-                              className="form-control-label"
-                              htmlFor="input-password"
-                            >
-                              Password
-                            </label>
-                            <Input
-                              className="form-control-alternative"
-                              id="input-password"
-                              placeholder="******"
-                              type="password"
-                              value={password}
-                              onChange={(e) => setPassword(e.target.value)}
-                            />
-                          </FormGroup>
-                        </Col>
-                      </Row>
-                    </div>
-                    <hr className="my-4" />
-                    {/* Address */}
-                    <h6 className="heading-small text-muted mb-4">
-                      Contact information
-                    </h6>
-                    <div className="pl-lg-4">
-                      <Row>
-                        <Col md="12">
-                          <FormGroup>
-                            <label
-                              className="form-control-label"
-                              htmlFor="input-address"
-                            >
-                              Address
-                            </label>
-                            <Input
-                              className="form-control-alternative"
-                              id="input-address"
-                              placeholder="Home Address"
-                              type="text"
-                              value={address}
-                              onChange={(e) => setAddress(e.target.value)}
-                            />
-                          </FormGroup>
-                        </Col>
-                      </Row>
-                      <Row>
-                        <Col md="12">
-                          <FormGroup>
-                            <label
-                              className="form-control-label"
-                              htmlFor="input-phone"
-                            >
-                              Phone
-                            </label>
-                            <Input
-                              className="form-control-alternative"
-                              id="input-phone"
-                              placeholder="+20"
-                              type="text"
-                              value={phone}
-                              onChange={(e) => setPhone(e.target.value)}
-                            />
-                          </FormGroup>
-                        </Col>
-                      </Row>
-                    </div>
-                    <hr className="my-4" />
-                    {/* Specialization and bday */}
-                    <h6 className="heading-small text-muted mb-4">Extra Information</h6>
-                    <div className="pl-lg-4">
-                      <FormGroup>
-                        <Row>
-                        <Col lg="6">
-                        <FormGroup>
-                            <label
-                              className="form-control-label"
-                              htmlFor="input-specialization"
-                            >
-                              Specialization
-                            </label>
-                            <Input
-                              className="form-control-alternative"
-                              id="input-specialization"
-                              placeholder="Specialization"
-                              type="text"
-                              value={specialization}
-                              onChange={(e) => setSpecialization(e.target.value)}
-                            />
-                          </FormGroup>
-                        </Col>
-                        <Col lg="6">
-                        <FormGroup>
-                            <label
-                              className="form-control-label"
-                              htmlFor="input-birthday"
-                            >
-                              Birthday
-                            </label>
-                            <Input
-                              className="form-control-alternative"
-                              id="input-birthday"
-                              placeholder="Birthday"
-                              type="text"
-                              value={birthday}
-                              onChange={(e) => setBirthday(e.target.value)}
-                            />
-                          </FormGroup>
-
-                        </Col>
-                      </Row>
-                      <Row>
-                      <Col className="text-right" xs="12">
-                      <Button
-                        color="primary"
-                        // href="/admin/Doctorslist"  //8aleban hane7tagha te7arakna le el next page
-                        onClick={handleEdit}
-                        size="l"
-                      >
-                        Save
-                      </Button>
-
-                       <Button
-                        color="primary"
-                        href="/admin/Doctorslist"  //8aleban hane7tagha te7arakna le el next page
-                        size="l"
-                      >
-                        Cancel
-                      </Button>
-
-                    </Col>
-                      </Row>
-                      </FormGroup>
-                    </div>
-                  </Form>
-                </CardBody>
-              </Card>
-            </Col>
-          </Row>
-        </Container>
+                  <Col className="order-xl-1" xl="8">
+                      <Card className="bg-secondary shadow">
+                          <CardHeader className="bg-white border-0">
+                              <Row className="align-items-center">
+                                  <Col xs="8">
+                                      <h3 className="mb-0">Doctor Profile</h3>
+                                  </Col>
+                              </Row>
+                          </CardHeader>
+                          <CardBody>
+                              {/* Personal Information */}
+                              <h6 className="heading-small text-muted mb-4">
+                                  Doctor Information
+                              </h6>
+                              <div className="pl-lg-4">
+                                  <Row>
+                                      <Col lg="6">
+                                          <p><strong>First Name:</strong> {firstname}</p>
+                                      </Col>
+                                      <Col lg="6">
+                                      <p><strong>Last Name:</strong> {lastname}</p>
+                                      </Col>
+                                  </Row>
+                                  <Row>
+                                      <Col lg="6">
+                                      <p><strong>Email:</strong> {email}</p>
+                                      </Col>
+                                      
+                                  </Row>
+                              </div>
+  
+                              {/* Contact Information */}
+                              <hr className="my-4" />
+                              <h6 className="heading-small text-muted mb-4">
+                                  Contact Information
+                              </h6>
+                              <div className="pl-lg-4">
+                                  <Row>
+                                      <Col lg="6">
+                                          <p><strong>Address:</strong> {address}</p>
+                                      </Col>
+                                      <Col lg="6">
+                                          <p><strong>Phone Number:</strong> {phone}</p>
+                                      </Col>
+                                  </Row>
+                              </div>
+  
+                              {/* Health Records */}
+                              <hr className="my-4" />
+                              <h6 className="heading-small text-muted mb-4">
+                                  Extra information
+                              </h6>
+                              <div className="pl-lg-4">
+                                  <Row>
+                                      <Col lg="6">
+                                          <p><strong>Specialization:</strong> {specialization}</p>
+                                      </Col>
+                                      <Col lg="6">
+                                          <p><strong>Birthday:</strong> {birthday}</p>
+                                      </Col>
+                                  </Row>
+                              </div>
+                          </CardBody>
+                      </Card>
+                  </Col>
+              </Row>
+          </Container>
       </>
-    );
+      );
   };
 
   export default DoctorSeeProfile;

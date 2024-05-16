@@ -15,6 +15,7 @@ import {Route} from "react-router-dom";
 import AppProfile from "views/examples/AppointmentCreate";
 // import DoctorCreateProfile from "views/examples/DoctorCreateProfile";
 import DoctorTable from "./views/examples/DoctorTable";
+import DoctorSeeProfile from "views/examples/DoctorSeeProfile";
 
 var routes = [
   {
@@ -114,6 +115,13 @@ var routes = [
       path: "/Appointments",
       name: "",
       component: <AppTables/>,
+      layout: "/admin",
+    },
+    {
+      path: "/SeeDoctor/*",
+      name: "",
+      icon: "",
+      component: <DoctorSeeProfile />,  //sheel el arraf da lama te32al we 3adel fe file index.js
       layout: "/admin",
     },
  

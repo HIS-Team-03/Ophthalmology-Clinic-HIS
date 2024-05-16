@@ -99,7 +99,8 @@ const DoctorTable = () => {
                       {/*    className="rounded-circle"*/}
                       {/*  />*/}
                       {/*</td>*/}
-                      <td onClick={()=>showDoctor(doctor._id)} style={{ textDecoration: 'underline', color: 'grey', cursor: 'pointer' }}>{doctor.firstName +" "+ doctor.lastName}</td>
+                      {/* <td onClick={()=>showDoctor(doctor._id)} style={{ textDecoration: 'underline', color: 'blue', cursor: 'pointer' }}>{doctor.firstName +" "+ doctor.lastName}</td> */}
+                      <td><Link onClick={()=>showDoctor(doctor._id)}>{doctor.firstName +" "+ doctor.lastName}</Link></td>
                       <td>{doctor.email}</td>
                       <td>{doctor.phone}</td>
                       <td>{doctor.address}</td>
