@@ -97,7 +97,7 @@ var routes = [
   // {<Route path="/admin/Patients/:id" element={<PatientProfile/> }/> }
 
 
-    name: "",
+  { name: "",
     path: "/CreateAppointment",
     component: <AppProfile/>,
     layout: "/admin",},
