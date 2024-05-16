@@ -63,11 +63,11 @@ const Admin = (props) => {
         />
         <Routes>
           {getRoutes(routes)}
-          <Route path="*" element={<Navigate to="/admin/index" replace />} />
+          {/* mmkn ne7tag neuse el ta7t not sure bs hatedrab lw 7aetnaha mawdoo3 el ids */}
+          {/* <Route path="*" element={<Navigate to="/admin/index" replace />} /> */}  
         </Routes>
         <Container fluid>
           <AdminFooter />
-          <Chatbot />
         </Container>
       </div>
     </>

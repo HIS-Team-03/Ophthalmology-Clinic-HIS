@@ -17,8 +17,9 @@
 */
 
 // reactstrap components
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
+
 
 
 import {
@@ -36,7 +37,7 @@ import {
   // core components
 //   import UserHeader from "components/Headers/UserHeader.js";
   import DoctorCreateHeader from "components/Headers/DoctorCreateHeader";
-  const DoctorCreateProfile = () => {
+  const DoctorEditProfile = () => {
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -47,34 +48,54 @@ import {
     const [specialization, setSpecialization] = useState("");
     const [birthday, setBirthday] = useState("");
 
-    const handleCreate = async () => {
+    const url = window.location.href;
+    const id = url.substring(url.lastIndexOf('/') + 1);
+    console.log("id: ",id); // This will log the id passed in the URL
+
+    useEffect(() => {
+      populateData();
+    }, []);
+
+    
+    const populateData = async ()=>{
+      const back_url = `http://localhost:5001/api/doctors/${id}`
+      const response = await axios.get(back_url);
+      console.log("email:  ",response.data.email)
+      setFirstName(response.data.firstName)
+      setLastName(response.data.lastName)
+      setEmail(response.data.email)
+      setPassword(response.data.password)
+      setPhone(response.data.phone)
+      setAddress(response.data.address)
+      setSpecialization(response.data.specialization)
+      setBirthday(response.data.birthday)
+    }
+    
+
+    
+
+    const handleEdit = async () => {
         try{
-            const url = "http://localhost:5001/api/doctors"; // Backend API endpoint
+            const url = `http://localhost:5001/api/doctors/${id}`; // Backend API endpoint
             const data = {
                 email: email,
                 password: password,
                 firstName: firstname,
-                lastName: lastname, 
+                lastName: lastname,
                 address:address,
                 phone: phone,
                 specialization: specialization,
                 birthday: birthday,
             };
             // Send POST request to the backend API
-            const response = await axios.post(url, data);
+            const response = await axios.put(url, data);
 
-            //edit nw
-            if(response.data.email_exists === "true"){
-              // window.location.href = "http://localhost:3000/admin/Doctors";
-              window.alert("emai metkarar");
-              return;
-            }
-            //end edit
+            
 
             // Handle the response
-            console.log("Created Successfully:", response.data);
-            // window.location.href = "http://localhost:3000/admin/Doctors"; //8aleban hane7tagha te7arakna le el next page
-            window.alert("Created Successfully");
+            console.log("updated Successfully:", response.data);
+            window.alert("updated Successfully");
+            window.location.href = "http://localhost:3000/admin/Doctorslist";
         }catch (error) {
             // Handle errors
             // console.error("Wrong Credentials", error.message);
@@ -101,7 +122,7 @@ import {
                     <Col xs="8">
                       <h3 className="mb-0">My account</h3>
                     </Col>
-                    
+
                   </Row>
                 </CardHeader>
                 <CardBody>
@@ -125,6 +146,7 @@ import {
                               placeholder="First name"
                               type="text"
                               value={firstname}
+                              // value={"khaledddd"}
                               onChange={(e) => setFirstName(e.target.value)}
                             />
                           </FormGroup>
@@ -146,7 +168,7 @@ import {
                               onChange={(e) => setLastName(e.target.value)}
                             />
                           </FormGroup>
-                          
+
                         </Col>
                       </Row>
                       <Row>
@@ -271,24 +293,33 @@ import {
                               className="form-control-alternative"
                               id="input-birthday"
                               placeholder="Birthday"
-                              type="date"
+                              type="text"
                               value={birthday}
                               onChange={(e) => setBirthday(e.target.value)}
                             />
                           </FormGroup>
-                          
+
                         </Col>
                       </Row>
                       <Row>
                       <Col className="text-right" xs="12">
                       <Button
                         color="primary"
-                        // href="#pablo"  //8aleban hane7tagha te7arakna le el next page 
-                        onClick={handleCreate}
+                        // href="/admin/Doctorslist"  //8aleban hane7tagha te7arakna le el next page
+                        onClick={handleEdit}
                         size="l"
                       >
-                        Create Doctor
+                        Save
                       </Button>
+
+                       <Button
+                        color="primary"
+                        href="/admin/Doctorslist"  //8aleban hane7tagha te7arakna le el next page
+                        size="l"
+                      >
+                        Cancel
+                      </Button>
+
                     </Col>
                       </Row>
                       </FormGroup>
@@ -302,6 +333,5 @@ import {
       </>
     );
   };
-  
-  export default DoctorCreateProfile;
-  
+
+  export default DoctorEditProfile;

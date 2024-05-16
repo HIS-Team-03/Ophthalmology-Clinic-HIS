@@ -13,6 +13,8 @@ import PatientCreateProfile from "views/examples/PatientCreateProfile";
 import PatientProfile from "./views/examples/PatientProfile";
 import {Route} from "react-router-dom";
 import AppProfile from "views/examples/AppointmentCreate";
+// import DoctorCreateProfile from "views/examples/DoctorCreateProfile";
+import DoctorTable from "./views/examples/DoctorTable";
 
 var routes = [
   {
@@ -32,13 +34,20 @@ var routes = [
   },
 
 
+  
   {
-    path: "/Doctors",
-    name: "Doctors",
+    path: "/CreateDoctor",
+    name: "Create Doctor",
     icon: "ni ni-badge",
     component: <DoctorCreateProfile />,
     layout: "/admin",
-   
+  },
+  {
+    path: "/Doctorslist",
+    name: "Doctors List",
+    icon: "ni ni-badge",
+    component: <DoctorTable />,
+    layout: "/admin",
   },
   {
     name: "Appointment",
