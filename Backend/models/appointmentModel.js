@@ -15,23 +15,22 @@ const appointmentSchema = new mongoose.Schema({
         required: true,
     },
     date: {
-        type: Date,
+        type: String,
         required: true,
+    },
+    time: { type: String,
+        required:true,
     },
     status: {
         type: String,
-        enum: ['scheduled', 'cancelled', 'completed'],
-        default: 'scheduled'
+        enum: ['scheduled', 'cancelled', 'pending'],
+        default: 'pending'
     },
     payment: {
         amount: {
             type: Number,
             required: true,
         },
-        method: {
-            type: String,
-            required: true,
-        }
     },
 });
 
@@ -39,23 +38,23 @@ const Appointment = mongoose.model('Appointment', appointmentSchema);
 
 module.exports = Appointment;
 
-async function saveTestapp() {
-    try {
-        const testapp = new Appointment({
-            patientId: '321',
-            doctorId: '1818',
-            serviceId: 'check',
-            date: '12',
-            status: 'scheduled',
-            payment: {
-                amount: 100, 
-                method: 'credit card' 
-            }
-        });
-        const savedAppointment = await testapp.save(); // Corrected
-        console.log('Appointment saved successfully:', savedAppointment);
-    } catch (error) {
-        console.error('Error saving appointment:', error);
-    }
-}
+// async function saveTestapp() {
+//     try {
+//         const testapp = new Appointment({
+//             patientId: '321',
+//             doctorId: '1818',
+//             serviceId: 'check',
+//             date: '12',
+//             status: 'scheduled',
+//             payment: {
+//                 amount: 100, 
+//                 method: 'credit card' 
+//             }
+//         });
+//         const savedAppointment = await testapp.save(); // Corrected
+//         console.log('Appointment saved successfully:', savedAppointment);
+//     } catch (error) {
+//         console.error('Error saving appointment:', error);
+//     }
+// }
 

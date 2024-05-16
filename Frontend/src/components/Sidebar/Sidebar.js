@@ -63,9 +63,19 @@ const Sidebar = (props) => {
               {prop.name}
             </DropdownToggle>
             <DropdownMenu>
+              
               {prop.children.map((child, index) => (
-                <DropdownItem key={index} to={child.layout + child.path} tag={NavLinkRRD}>
+                <DropdownItem key={index}>
+                  <NavItem>
+                      <NavLink
+                  to={child.layout + child.path}
+                  tag={NavLinkRRD}
+                  onClick={closeCollapse}
+                >
+                  <i className={child.icon} />
                   {child.name}
+                </NavLink>
+                </NavItem>
                 </DropdownItem>
               ))}
             </DropdownMenu>
