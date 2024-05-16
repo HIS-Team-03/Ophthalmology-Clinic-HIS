@@ -6,7 +6,11 @@ import Login from "views/examples/Login.js";
 import Tables from "views/examples/Tables.js";
 import Icons from "views/examples/Icons.js";
 import DoctorCreateProfile from "views/examples/DoctorCreateProfile";
-
+import PatientCreateHeader from "./components/Headers/PatientCreateHeader";
+import PatientTable from "views/examples/PatientTable";
+import PatientCreateProfile from "views/examples/PatientCreateProfile";
+import PatientProfile from "./views/examples/PatientProfile";
+import {Route} from "react-router-dom";
 var routes = [
   {
     path: "/index",
@@ -15,13 +19,16 @@ var routes = [
     component: <Index />,
     layout: "/admin",
   },
+
   {
     path: "/Patients",
     name: "Patients",
     icon: "ni ni-ambulance",
-    component: <Tables />,
+    component: <PatientTable />,
     layout: "/admin",
   },
+
+
   {
     path: "/Doctors",
     name: "Doctors",
@@ -58,6 +65,23 @@ var routes = [
     component: <Login/>,
     layout: "/auth",
   },
- 
+  {
+    path: "/PatientsCreate",
+    component: <PatientCreateProfile type={"Create"} />,
+    layout: "/admin",
+  },
+  {
+    path: "/PatientsUpdate",
+    component: <PatientCreateProfile type={"Update"} />,
+    layout: "/admin",
+  },
+  {
+    path: "/Patients/:id",
+    component: <PatientProfile/>,
+    layout: "/admin",
+  },
+  // {<Route path="/admin/Patients/:id" element={<PatientProfile/> }/> }
+
+
 ];
 export default routes;

@@ -7,7 +7,7 @@ import { Container, Row, Col } from "reactstrap";
 // core components
 import AuthNavbar from "components/Navbars/AuthNavbar.js";
 import AuthFooter from "components/Footers/AuthFooter.js";
-
+import Chatbot from "components/Footers/chatbot.js";
 import routes from "routes.js";
 
 const Auth = (props) => {
@@ -83,6 +83,8 @@ const Auth = (props) => {
         </Container>
       </div>
       <AuthFooter />
+      <Chatbot />
+
     </>
   );
 };

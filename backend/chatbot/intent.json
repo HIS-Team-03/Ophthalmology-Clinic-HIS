@@ -1,0 +1,280 @@
+{"intents": [
+  {
+    "tag": "greeting",
+    "patterns": ["Hi", "How are you", "Is anyone there?", "Hello", "Good day"],
+    "responses": ["Hello!", "Good to see you again!", "Hi there, how can I help?"],
+    "context_set": ""
+  },
+  {
+    "tag": "goodbye",
+    "patterns": ["Bye", "See you later", "Goodbye", "Nice chatting to you, bye", "Till next time"],
+    "responses": ["See you!", "Have a nice day", "Bye! Come back again soon."],
+    "context_set": ""
+  },
+  {
+    "tag": "thanks",
+    "patterns": ["Thanks", "Thank you", "That's helpful", "Thanks for the help"],
+    "responses": ["Happy to help!", "Any time!", "My pleasure"],
+    "context_set": ""
+  },
+  {
+    "tag": "noanswer",
+    "patterns": [],
+    "responses": ["Sorry, can't understand you", "Please give me more info", "Not sure I understand"],
+    "context_set": ""
+  }, {
+    "tag": "schedule_appointment",
+    "patterns": [
+      "I need to book an appointment",
+      "Can I get an appointment?",
+      "Schedule an appointment",
+      "I want to see the doctor"
+    ],
+    "responses": [
+      "Sure, I can help you with that. Which doctor would you like to see?",
+      "Let's get you an appointment. Which doctor do you prefer to consult?"
+    ],
+    "context_set": "choose_doctor"
+  },
+  {
+    "tag": "choose_time",
+    "patterns": [
+      "Any doctor will do",
+      "I would like to see Dr. Hazem",
+      "Dr. Sara, please",
+      "No preference for the doctor"
+    ],
+    "responses": [
+      "What day are you looking to come in? And what time suits you best?",
+      "Could you please specify the date and time that works for you?"
+    ],
+    "context_filter": "choose_doctor"
+  },
+    {
+      "tag": "cancel_appointment",
+      "patterns": [
+        "I need to cancel my appointment",
+        "Cancel my appointment",
+        "I can’t make it to my appointment"
+      ],
+      "responses": [
+        "I can help you cancel your appointment. Can you provide your appointment details?",
+        "No problem, I’ll need your appointment date to proceed with the cancellation."
+      ]
+    },
+    {
+      "tag": "opening_hours",
+      "patterns": [
+        "What are your opening hours?",
+        "When are you open?",
+        "Clinic timings"
+      ],
+      "responses": [
+        "Our clinic is open from 9 AM to 5 PM during weekdays and from 9 AM to 1 PM on Saturdays.",
+        "We are available from Monday to Saturday, 9 AM to 5 PM."
+      ]
+    },
+    {
+      "tag": "services_offered",
+      "patterns": [
+        "What services do you offer?",
+        "Tell me about your services",
+        "What can I get done at your clinic?"
+      ],
+      "responses": [
+        "We offer general consultations, dental care, dermatology services, and emergency care.",
+        "Our clinic provides a range of services including pediatric care, orthopedics, and general surgery."
+      ]
+    },
+    {
+      "tag": "insurance_query",
+      "patterns": [
+        "Do you take insurance?",
+        "What insurance do you accept?",
+        "Insurance coverage"
+      ],
+      "responses": [
+        "We accept most major insurance providers. Please provide your insurance details for more specific information.",
+        "You can check your insurance coverage by sending us your provider’s details."
+      ]
+    },
+    {
+      "tag": "feedback",
+      "patterns": [
+        "I want to leave feedback",
+        "Can I give a review?",
+        "How can I give feedback?"
+      ],
+      "responses": [
+        "Sure, I would love to take your feedback. Please go ahead.",
+        "Please tell me how your experience was, and I'll pass it along!"
+      ]
+    },
+    {
+      "tag": "emergency",
+      "patterns": [
+        "I need emergency help",
+        "Is this an emergency?",
+        "Urgent care"
+      ],
+      "responses": [
+        "If this is a medical emergency, please call emergency services right now. Do you want me to display the emergency contact numbers?"
+      ]
+    },
+      {
+      "tag": "new_patient_info",
+      "patterns": [
+        "What do I need to do as a new patient?",
+        "New patient registration process",
+        "How do I register as a new patient?"
+      ],
+      "responses": [
+        "Welcome to our clinic! You can register by visiting our website or you can provide me with your details here, and I'll assist you with the registration process.",
+        "As a new patient, you'll need to fill out our registration form. I can guide you through the process right here or you can complete it on our website."
+      ]
+    },
+    {
+      "tag": "prescription_refill",
+      "patterns": [
+        "I need a prescription refill",
+        "Can I get a prescription refill?",
+        "Refill my prescription"
+      ],
+      "responses": [
+        "I can help you with that. Please provide your prescription details.",
+        "Sure, I’ll need your prescription information to proceed with the refill."
+      ]
+    },
+    {
+      "tag": "lab_test_results",
+      "patterns": [
+        "How do I get my lab test results?",
+        "Lab test results",
+        "When will I get my test results?"
+      ],
+      "responses": [
+        "You can get your lab test results by logging into our patient portal or by contacting our clinic directly.",
+        "Your lab test results will be available on our patient portal. You can also call our clinic for more information."
+      ]
+    },
+    {
+      "tag": "doctor_specialization",
+      "patterns": [
+        "What are the doctor's specializations?",
+        "Doctor's expertise",
+        "Which doctors are available?"
+      ],
+      "responses": [
+        "We have doctors specializing in various fields such as cardiology, pediatrics, and gynecology. Which department are you interested in?",
+        "Our doctors are experts in fields like orthopedics, dermatology, and general medicine. Which specialization are you looking for?"
+      ]
+    },
+    {
+      "tag": "doctor_availability",
+      "patterns": [
+        "When are the doctors available?",
+        "Doctor's schedule",
+        "Doctor's availability"
+      ],
+      "responses": [
+        "Our doctors are available from Monday to Saturday. Which day are you looking to book an appointment?",
+        "You can check the availability of our doctors by visiting our website or by calling our clinic directly."
+      ]
+    },
+    {
+      "tag": "doctor_recommendation",
+      "patterns": [
+        "Can you recommend a doctor?",
+        "Which doctor should I see?",
+        "Doctor suggestion"
+      ],
+      "responses": [
+        "I can recommend a doctor based on your medical needs. We have a list of qualified doctors like Dr. Hazem, Dr. Sara, Dr. Eman, Dr. Mariem, and Dr. Khadija. What type of doctor are you looking for?",
+        "Our doctors are experts in various fields. Can you tell me more about your medical condition so I can recommend the right doctor for you? Available doctors include Dr. Hazem, Dr. Sara, Dr. Eman, Dr. Mariem, and Dr. Khadija."
+      ]
+    },
+      {
+      "tag": "glasses_repair",
+      "patterns": [
+        "I broke my glasses, can you help?",
+        "Do you offer repair services for spectacles?",
+        "How to get glasses repaired?"
+      ],
+      "responses": [
+        "We can certainly repair your glasses. Can you describe what happened or what needs fixing?",
+        "Bring your glasses in and we'll assess the damage. We offer repairs on frames and lenses."
+      ]
+    },
+      {
+      "tag": "laser_surgery_consult",
+      "patterns": [
+        "Can you tell me about LASIK surgery?",
+        "Information about laser eye surgery",
+        "I am considering LASIK, what do I need to know?"
+      ],
+      "responses": [
+        "I can provide information or schedule a consultation with our LASIK specialist. Are you available for an appointment to discuss this further?",
+        "LASIK surgery is a great option for vision correction. Our experts can explain the process and determine if you're a candidate."
+      ]
+    },
+    {
+      "tag": "doctor_availability",
+      "patterns": [
+        "Is Dr. Hazem available?",
+        "When is Dr. Sara available?",
+        "Can I see Dr. Eman's schedule?",
+        "Are there any slots open with Dr. Mariem?",
+        "Check availability for Dr. Khadija"
+      ],
+      "responses": [
+        "To check the availability of our doctors, please visit our appointments section where you can view available slots and book directly.",
+        "You can see the schedules and book appointments with our doctors like Dr. Hazem, Dr. Sara, Dr. Eman, Dr. Mariem, and Dr. Khadija by visiting the appointment booking section on our site."
+      ]
+    },
+    {
+      "tag": "doctor_availability",
+      "patterns": [
+        "Is Dr. Hazem available next Tuesday?",
+        "When does Dr. Sara have an open slot?",
+        "Show me the schedule for eye specialists next week."
+      ],
+      "responses": [
+        "Dr. Hazem is available next Tuesday from 10 AM to 3 PM.",
+        "Dr. Sara has an opening next Wednesday at 2 PM.",
+        "Here are the available slots for eye specialists next week..."
+      ]
+    },
+    {
+      "tag": "doctor_specialty",
+      "patterns": [
+        "Who specializes in retina problems?",
+        "I need a doctor for cataract surgery.",
+        "Find me an ophthalmologist who handles glaucoma."
+      ],
+      "responses": [
+        "Dr. Reynolds specializes in retina problems.",
+        "Dr. Carter is an expert in cataract surgery.",
+        "Dr. Hamilton is a well-known ophthalmologist who handles glaucoma."
+      ]
+    },
+  {
+  "tag": "find_doctor",
+  "patterns": ["I need an eye specialist", "Who is the best ophthalmologist?", "List of eye doctors"],
+  "responses": ["Let me look up eye specialists for you."]
+},
+{
+  "tag": "how_to_make_appointment",
+  "patterns": [
+    "How do I make an appointment?",
+    "Where can I book an appointment?",
+    "Can you help me with booking?",
+    "What should I do to schedule an appointment?"
+  ],
+  "responses": [
+    "To book an appointment, please go to the 'Appointments' section in the sidebar on the right. There you can see available slots and make your booking.",
+    "You can make an appointment by visiting the 'Appointments' tab on the right side of your screen. This section will show you all available times."
+  ]
+}
+
+]
+}
