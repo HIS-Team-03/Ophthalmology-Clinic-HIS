@@ -4,6 +4,7 @@ import Profile from "views/examples/Profile.js";
 import Maps from "views/examples/Maps.js";
 import Login from "views/examples/Login.js";
 import Tables from "views/examples/Tables.js";
+import AppTables from "views/examples/AppTables.js";
 import Icons from "views/examples/Icons.js";
 import DoctorCreateProfile from "views/examples/DoctorCreateProfile";
 import PatientCreateHeader from "./components/Headers/PatientCreateHeader";
@@ -11,6 +12,8 @@ import PatientTable from "views/examples/PatientTable";
 import PatientCreateProfile from "views/examples/PatientCreateProfile";
 import PatientProfile from "./views/examples/PatientProfile";
 import {Route} from "react-router-dom";
+import AppProfile from "views/examples/AppointmentCreate";
+
 var routes = [
   {
     path: "/index",
@@ -19,7 +22,6 @@ var routes = [
     component: <Index />,
     layout: "/admin",
   },
-
   {
     path: "/Patients",
     name: "Patients",
@@ -27,8 +29,6 @@ var routes = [
     component: <PatientTable />,
     layout: "/admin",
   },
-
-
   {
     path: "/Doctors",
     name: "Doctors",
@@ -41,8 +41,20 @@ var routes = [
     path: "/Appointments",
     name: "Appointment",
     icon: "ni ni-calendar-grid-58",
-    component: <Tables />,
-    layout: "/admin",
+    children: [
+      {
+        name: "Create Appointment",
+        path: "/CreateAppointment",
+        icon:"ni ni-bold-right",
+        component: <AppProfile/>,
+        layout: "/admin",
+      },
+     { name: "View Appointments",
+     path:"/Appointments",
+     icon: "ni ni-bold-right",
+     component: <AppTables />,
+     layout: "/admin",},
+    ]
   },
   {
     path: "/Prescription",
@@ -82,6 +94,18 @@ var routes = [
   },
   // {<Route path="/admin/Patients/:id" element={<PatientProfile/> }/> }
 
+
+  {
+    name: "",
+    path: "/CreateAppointment",
+    component: <AppProfile/>,
+    layout: "/admin",},
+    {
+      path: "/Appointments",
+      name: "",
+      component: <AppTables/>,
+      layout: "/admin",
+    },
 
 ];
 export default routes;
