@@ -13,10 +13,10 @@ import {
 
 export default function App() {
   const [messages, setMessages] = useState([
-    { text: "Hello and thank you for visiting MDBootstrap. Please click the video below.", sender: "bot" }
+    { text: "Hello and thank you for visiting Our Clinic." }
   ]);
   const [inputMessage, setInputMessage] = useState('');
-  const [isOpen, setIsOpen] = useState(true);  // State to manage the visibility of the chatbot
+  const [isOpen, setIsOpen] = useState(false);  // State to manage the visibility of the chatbot
 
   const handleSendMessage = () => {
     if (inputMessage.trim()) {
