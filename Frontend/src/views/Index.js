@@ -93,7 +93,7 @@ const Index = () => {
         else if (patient.sex === 'Female') genderCounts.Female += 1;
       });
       setGenderData({
-        labels: ['Male', 'Female', 'Other'],
+        labels: ['Male', 'Female'],
         datasets: [{
           data: [genderCounts.Male, genderCounts.Female],
           backgroundColor: ['#5e72e4', '#11cdef', '#2dce89'],
