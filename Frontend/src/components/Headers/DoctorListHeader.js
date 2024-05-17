@@ -3,7 +3,7 @@ import {
   Card, CardBody, CardTitle, Container, Row, Col, Form, FormGroup, InputGroupAddon, InputGroupText, Input, InputGroup
 } from "reactstrap";
 
-const DoctorListHeader = ({ setSearch, searchPatients, totalPatients }) => {
+const DoctorListHeader = ({ setSearch, searchPatients, totaldoctors }) => {
   const [input, setInput] = React.useState("");
 
   const handleInputChange = (event) => {
@@ -35,9 +35,9 @@ const DoctorListHeader = ({ setSearch, searchPatients, totalPatients }) => {
                     <Row>
                       <div className="col">
                         <CardTitle tag="h5" className="text-uppercase text-muted mb-0">
-                          Total Doctors
+                          Total Doctors 
                         </CardTitle>
-                        <span className="h2 font-weight-bold mb-0">{totalPatients}</span>
+                        <span className="h2 font-weight-bold mb-0">{totaldoctors}</span>
                       </div>
                       <Col className="col-auto">
                         <div className="icon icon-shape bg-danger text-white rounded-circle shadow">

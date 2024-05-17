@@ -59,8 +59,9 @@ const DoctorTable = () => {
 
   return (
     <>
-      <DoctorListHeader
-          // setSearch={setSearch} searchPatients={searchPatients} totalPatients={patients.length}
+      <DoctorListHeader 
+        totaldoctors={doctors.length}
+          // setSearch={setSearch} searchPatients={searchPatients} 
       />
       <Container className="mt--7" fluid>
         <Row>
@@ -153,5 +154,3 @@ const DoctorTable = () => {
 };
 
 export default DoctorTable;
-
-
