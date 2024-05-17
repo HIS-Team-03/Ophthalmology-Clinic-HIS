@@ -89,8 +89,7 @@ const deletePatient = async (id) => {
                     <th scope="col">Gender</th>
                     <th scope="col">Patient ID</th>
                     <th scope="col"/>
-                    <th scope="col"/>
-                    <th scope="col"/>
+
 
                 </tr>
                 </thead>
@@ -108,12 +107,6 @@ const deletePatient = async (id) => {
                           <td>{patient.age}</td>
                           <td>{patient.sex}</td>
                           <td>{patient._id}</td>
-                          {/*<td className="text-right">*/}
-                          {/*    <Link to={`/admin/PatientsUpdate`}>*/}
-                          {/*        <Button color="success ">Edit</Button>*/}
-                          {/*    </Link>*/}
-                          {/*</td>*/}
-
                           <td className="text-right">
                               <UncontrolledDropdown>
                                   <DropdownToggle
@@ -121,6 +114,7 @@ const deletePatient = async (id) => {
                                       href="#"
                                       role="button"
                                       size="sm"
+                                      color=""
                                   >
                                       <i className="fas fa-ellipsis-v"/>
                                   </DropdownToggle>
@@ -130,13 +124,14 @@ const deletePatient = async (id) => {
                                       >
                                           Delete Patient
                                       </DropdownItem>
-                                      <DropdownItem
-                                          onClick={(e) => e.preventDefault()}
-                                      >
-                                          <Link to={`/admin/PatientsUpdate`}>
-                                              <Button color="success " size="sm">Edit Patient</Button>
+                                          <Link to={{
+                                                pathname: `/admin/PatientsUpdate/${patient._id}`,
+                                                state: { patient }
+                                          }}>
+                                          <DropdownItem>
+                                                Update Patient
+                                          </DropdownItem>
                                           </Link>
-                                      </DropdownItem>
                                   </DropdownMenu>
                               </UncontrolledDropdown>
                           </td>

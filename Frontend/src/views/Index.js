@@ -26,6 +26,7 @@ const Index = () => {
   const [chartData, setChartData] = useState(chartExample2.data); // State for appointment data
   const [ageData, setAgeData] = useState(chartExample3.data); // State for age distribution data
   const [genderData, setGenderData] = useState(chartExample4.data);
+  const [diseaseData, setDiseaseData] = useState();
 
   useEffect(() => {
     if (window.Chart) {
@@ -34,6 +35,7 @@ const Index = () => {
     fetchAppointmentData();
     fetchAgeDistributionData();
     fetchGenderData();
+    fetchDiseaseData();
   }, []);
 
   const fetchAppointmentData = async () => {
@@ -87,7 +89,7 @@ const Index = () => {
     try {
       const response = await axios.get('http://localhost:5001/api/v1/patients');
       const patients = response.data.data.patients;
-      const genderCounts = { Male: 0, Female: 0 };
+      const genderCounts = {Male: 0, Female: 0};
       patients.forEach(patient => {
         if (patient.sex === 'Male') genderCounts.Male += 1;
         else if (patient.sex === 'Female') genderCounts.Female += 1;
@@ -103,6 +105,31 @@ const Index = () => {
     } catch (error) {
       console.error('Error fetching gender data:', error);
     }
+  };
+
+    const fetchDiseaseData = async () => {
+      try{
+        const response = await axios.get('http://localhost:5001/api/v1/patients/');
+        const patients =  response.data.data.patients;
+        const diseaseCounts = {heartDisease:0 , diabetes:0}
+        patients.forEach(patient => {
+          if (patient.heartDisease) diseaseCounts.heartDisease += 1;
+          if (patient.diabetes) diseaseCounts.diabetes += 1;
+        });
+        setDiseaseData({
+          labels: ['Heart Disease', 'Diabetes'],
+          datasets: [{
+          data: [diseaseCounts.heartDisease, diseaseCounts.diabetes],
+          backgroundColor: ['#5e72e4', '#11cdef', '#2dce89'],
+          hoverBackgroundColor: ['#324cdd', '#0da5c0', '#28b779']
+          }]
+        });
+        console.log('Disease data:', diseaseData);
+        console.log('Gender data:', genderData);
+
+      } catch(error){
+        console.error('hmasa fetching disease data:', error);
+      }
   };
   return (
     <>
@@ -164,7 +191,7 @@ const Index = () => {
           <Col xl="4">
             <Card className="shadow">
               <CardHeader className="bg-transparent">
-                <h6 className="text-uppercase text-muted ls-1 mb-1">Performance</h6>
+                <h6 className="text-uppercase text-muted ls-1 mb-1">Appointments</h6>
                 <h2 className="mb-0">Total Appointments</h2>
               </CardHeader>
               <CardBody>
@@ -187,6 +214,40 @@ const Index = () => {
               </CardBody>
             </Card>
           </Col>
+          {/*<Col xl="12">*/}
+          {/*  <Card className="shadow mt-4">*/}
+          {/*    <CardHeader className="bg-transparent">*/}
+          {/*      <h6 className="text-uppercase text-muted ls-1 mb-1">Disease Distribution</h6>*/}
+          {/*      <h2 className="mb-0">Patient Disease</h2>*/}
+          {/*      </CardHeader>*/}
+          {/*    <CardBody>*/}
+          {/*        <Pie*/}
+          {/*            data={diseaseData}*/}
+          {/*            options={{*/}
+          {/*              maintainAspectRatio: false,*/}
+          {/*              legend: {*/}
+          {/*                position: 'bottom',*/}
+          {/*                labels: {*/}
+          {/*                  fontSize: 14,*/}
+          {/*                  usePointStyle: true*/}
+          {/*                }*/}
+          {/*              },*/}
+          {/*              tooltips: {*/}
+          {/*                callbacks: {*/}
+          {/*                  label: function(tooltipItem, data) {*/}
+          {/*                    const dataset = data.datasets[tooltipItem.datasetIndex];*/}
+          {/*                    const total = dataset.data.reduce((previousValue, currentValue) => previousValue + currentValue);*/}
+          {/*                    const currentValue = dataset.data[tooltipItem.index];*/}
+          {/*                    const percentage = Math.floor(((currentValue/total) * 100) + 0.5);*/}
+          {/*                    return data.labels[tooltipItem.index] + ': ' + percentage + '%';*/}
+          {/*                  }*/}
+          {/*                }*/}
+          {/*              }*/}
+          {/*            }}*/}
+          {/*        />*/}
+          {/*    </CardBody>*/}
+          {/*  </Card>*/}
+          {/*</Col>*/}
         </Row>
       </Container>
     </>

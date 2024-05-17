@@ -1,0 +1,7 @@
+PUT http://localhost:5001/api/v1/patients/a7a5e01975bb
+Content-Type: application/json
+
+{
+  "doctorName": "Dr Mohamed"
+
+}

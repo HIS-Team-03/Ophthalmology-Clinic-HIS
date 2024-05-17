@@ -95,7 +95,7 @@ var routes = [
     layout: "/admin",
   },
   {
-    path: "/PatientsUpdate",
+    path: "/PatientsUpdate/:Patient_id",
     component: <PatientCreateProfile type={"Update"} />,
     layout: "/admin",
   },

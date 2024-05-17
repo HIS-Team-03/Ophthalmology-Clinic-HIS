@@ -1,6 +1,7 @@
 import React from 'react';
 import PatientCreateHeader from "../../components/Headers/PatientCreateHeader";
-import {useState} from "react";
+import {useState,useEffect} from "react";
+import {useParams} from "react-router-dom";
 import {Button, Card, CardBody, CardHeader, Col, Container, Form, FormGroup, Input, Row} from "reactstrap";
 import './PatientProfile.css';
 
@@ -30,6 +31,58 @@ const PatientCreateProfile = ( {type="Create"}) => {
     const [anySurgeries, setAnySurgeries] = useState(false);
     const [eyeHealthHistory, setEyeHealthHistory] = useState('');
     const [showPassword, setShowPassword] = useState(false);
+    const [gender, setGender] = useState('');
+
+
+    const [patientData, setPatientData] = useState({});
+    const [initialData, setInitialData] = useState({});
+    const { Patient_id } = useParams();
+    const { id } = useParams();
+
+    console.log(Patient_id);
+
+    useEffect(() => {
+        if (type === "Update") {
+            fetchPatientData();
+        }
+    }, [type]);
+
+    const fetchPatientData = async () => {
+        try {
+            const response = await fetch(`http://localhost:5001/api/v1/patients/${Patient_id}`);
+            const data = await response.json();
+            setPatientData(data);
+            setInitialData(data); // Keep a copy of the initial data
+        } catch (error) {
+            console.error("Failed to fetch patient data", error);
+        }
+    };
+
+    useEffect(() => {
+        if (type === "Update" && patientData) {
+            setFirstName(patientData.firstname || "");
+            setLastName(patientData.lastname || "");
+            setUsername(patientData.username || "");
+            setEmail(patientData.email || "");
+            setPassword(""); // Do not pre-fill password fields
+            setConfirmPassword("");
+            setAddress(patientData.address || "");
+            setPhone(patientData.phone || "");
+            setBirthday(patientData.birthday || "");
+            setMedicalHistory(patientData.medicalHistory || "");
+            setHeartDisease(patientData.heartDisease || false);
+            setDiabetes(patientData.diabetes || false);
+            setAnySurgeries(patientData.anySurgeries || false);
+            setEyeHealthHistory(patientData.eyeHealthHistory || "");
+            setGender(patientData.gender || "");
+        }
+    }, [patientData, type]);
+
+
+
+
+
+
 
     const toggleShowPassword = () => {
         setShowPassword(!showPassword);
@@ -50,6 +103,7 @@ const PatientCreateProfile = ( {type="Create"}) => {
         setDiabetes(false);
         setAnySurgeries(false);
         setEyeHealthHistory("");
+        setGender("");
     }
     function calculateAge(birthday) {
         const birthDate = new Date(birthday);
@@ -67,6 +121,7 @@ const PatientCreateProfile = ( {type="Create"}) => {
         const age = calculateAge(birthday);
         const name = `${firstname} ${lastname}`;
 
+
         // Validate form inputs
         if (!name || !username || !age || !email || !address || !phone || !password || !confirmPassword) {
             // Provide user feedback for invalid inputs
@@ -78,8 +133,7 @@ const PatientCreateProfile = ( {type="Create"}) => {
             window.alert("Passwords do not match.");
             return;
         }
-
-
+        {console.log(gender)}
 
 
         try {
@@ -102,6 +156,7 @@ const PatientCreateProfile = ( {type="Create"}) => {
                     eyeHealthHistory,
                     password,
                     confirmPassword,
+                    sex:gender,
                     doctorName: "Dr. Ahmed",
                 }),
             });
@@ -129,47 +184,48 @@ const PatientCreateProfile = ( {type="Create"}) => {
     }
 
     const handleUpdatePatient = async () => {
-const age = calculateAge(birthday);
+        const age = calculateAge(birthday);
         const name = `${firstname} ${lastname}`;
 
         // Validate form inputs
         if (password !== confirmPassword) {
-            // Provide user feedback for invalid inputs
             window.alert("Passwords do not match.");
             return;
         }
+
+        // Collect only changed fields
+        const updatedFields = {};
+        if (firstname !== initialData.firstname) updatedFields.firstname = firstname;
+        if (lastname !== initialData.lastname) updatedFields.lastname = lastname;
+        if (username !== initialData.username) updatedFields.username = username;
+        if (email !== initialData.email) updatedFields.email = email;
+        if (address !== initialData.address) updatedFields.address = address;
+        if (phone !== initialData.phone) updatedFields.phoneNumber = phone;
+        if (birthday !== initialData.birthday) updatedFields.age = birthday;
+        if (medicalHistory !== initialData.medicalHistory) updatedFields.medicalHistory = medicalHistory;
+        if (heartDisease !== initialData.heartDisease) updatedFields.heartDisease = heartDisease;
+        if (diabetes !== initialData.diabetes) updatedFields.diabetes = diabetes;
+        if (anySurgeries !== initialData.anySurgeries) updatedFields.anySurgeries = anySurgeries;
+        if (eyeHealthHistory !== initialData.eyeHealthHistory) updatedFields.eyeHealthHistory = eyeHealthHistory;
+        if (gender !== initialData.sex) updatedFields.sex = gender;
+        if (password) updatedFields.password = password;
+        console.log(updatedFields);
+
         try {
-            const response = await fetch('http://localhost:5001/api/v1/patients', {
+            const response = await fetch(`http://localhost:5001/api/v1/patients/${Patient_id}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
-                    name,
-                    username,
-                    age,
-                    email,
-                    address,
-                    phoneNumber: phone,
-                    medicalHistory,
-                    heartDisease,
-                    diabetes,
-                    anySurgeries,
-                    eyeHealthHistory,
-                    password,
-                    confirmPassword,
-                    doctorName: "Dr. Ahmed",
-                }),
+
+                    phoneNumber: updatedFields.phoneNumber
+                }
+                ),
             });
             const responseData = await response.json();
-            // if(response.data.email_exists === "true"){
-            //     window.alert("Email already exists. Please use a different email.");
-            //     return;
-            // }
-            // if(response.data.username_exists === "true"){
-            //     window.alert("Username already exists. Please use a different username.");
-            //     return;
-            // }
+
+
             console.log(responseData);
             window.alert("Patient updated successfully.");
             resetForm();
@@ -177,9 +233,7 @@ const age = calculateAge(birthday);
             console.log(error);
             window.alert("Failed to update patient.");
         }
-
-    }
-
+    };
 
 
     return (
@@ -347,9 +401,23 @@ const age = calculateAge(birthday);
                             />
                           </FormGroup>
                         </Col>
+                            <Col lg="6">
+                                <FormGroup>
+                                    <label className="form-control-label" htmlFor="Gender">
+                                        Gender
+                                    </label>
+                                    <Input type="select" name="Gender" id="Gender" onChange={(e) => setGender(e.target.value)}>
+                                        <option value="">Select Gender</option>
+                                        <option value="Male">Male</option>
+                                        <option value="Female">Female</option>
+                                    </Input>
+                                </FormGroup>
+                            </Col>
                       </Row>
+
+
                     </div>
-                    <hr className="my-4" />
+                      <hr className="my-4" />
                     {/* Address */}
                     <h6 className="heading-small text-muted mb-4">
                       Contact information
@@ -500,7 +568,7 @@ const age = calculateAge(birthday);
                                 <Button
                                     color="primary"
                                     size="l"
-                                    onClick={handleCreatePatient}
+                                    onClick={type === "Create"? handleCreatePatient : handleUpdatePatient}
                                 >
                                     {type === "Create"? "Create Patient" : "Update Patient"}
                                 </Button>
