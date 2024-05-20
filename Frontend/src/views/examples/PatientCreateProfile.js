@@ -32,51 +32,51 @@ const PatientCreateProfile = ( {type="Create"}) => {
     const [eyeHealthHistory, setEyeHealthHistory] = useState('');
     const [showPassword, setShowPassword] = useState(false);
     const [gender, setGender] = useState('');
+    const [change, setChange] = useState(false);
 
 
     const [patientData, setPatientData] = useState({});
     const [initialData, setInitialData] = useState({});
     const { Patient_id } = useParams();
-    const { id } = useParams();
 
     console.log(Patient_id);
 
+
+
+
+    const populateData = async ()=>{
+        const back_url = `http://localhost:5001/api/v1/patients/${Patient_id}`
+        const response = await axios.get(back_url);
+        let fullName = response.data.data.Patient.name;
+        let nameParts = fullName.split(' ');
+
+        let firstName = nameParts[0];
+        let lastName = nameParts[1];
+        console.log("data:  ",firstName)
+
+        setFirstName(firstName)
+        setLastName(lastName)
+        setEmail(response.data.data.Patient.email)
+        setUsername(response.data.data.Patient.username)
+        setPhone(response.data.data.Patient.phoneNumber)
+        setAddress(response.data.data.Patient.address)
+        setBirthday(response.data.data.Patient.age)
+        setMedicalHistory(response.data.data.Patient.medicalHistory)
+        setHeartDisease(response.data.data.Patient.heartDisease)
+        setDiabetes(response.data.data.Patient.diabetes)
+        setAnySurgeries(response.data.data.Patient.anySurgeries)
+        setEyeHealthHistory(response.data.data.Patient.eyeHealthHistory)
+        setGender(response.data.data.sex)
+
+
+    }
+
+
     useEffect(() => {
         if (type === "Update") {
-            fetchPatientData();
+            populateData();
         }
-    }, [type]);
-
-    const fetchPatientData = async () => {
-        try {
-            const response = await fetch(`http://localhost:5001/api/v1/patients/${Patient_id}`);
-            const data = await response.json();
-            setPatientData(data);
-            setInitialData(data); // Keep a copy of the initial data
-        } catch (error) {
-            console.error("Failed to fetch patient data", error);
-        }
-    };
-
-    useEffect(() => {
-        if (type === "Update" && patientData) {
-            setFirstName(patientData.firstname || "");
-            setLastName(patientData.lastname || "");
-            setUsername(patientData.username || "");
-            setEmail(patientData.email || "");
-            setPassword(""); // Do not pre-fill password fields
-            setConfirmPassword("");
-            setAddress(patientData.address || "");
-            setPhone(patientData.phone || "");
-            setBirthday(patientData.birthday || "");
-            setMedicalHistory(patientData.medicalHistory || "");
-            setHeartDisease(patientData.heartDisease || false);
-            setDiabetes(patientData.diabetes || false);
-            setAnySurgeries(patientData.anySurgeries || false);
-            setEyeHealthHistory(patientData.eyeHealthHistory || "");
-            setGender(patientData.gender || "");
-        }
-    }, [patientData, type]);
+    },[]);
 
 
 
@@ -193,24 +193,6 @@ const PatientCreateProfile = ( {type="Create"}) => {
             return;
         }
 
-        // Collect only changed fields
-        const updatedFields = {};
-        if (firstname !== initialData.firstname) updatedFields.firstname = firstname;
-        if (lastname !== initialData.lastname) updatedFields.lastname = lastname;
-        if (username !== initialData.username) updatedFields.username = username;
-        if (email !== initialData.email) updatedFields.email = email;
-        if (address !== initialData.address) updatedFields.address = address;
-        if (phone !== initialData.phone) updatedFields.phoneNumber = phone;
-        if (birthday !== initialData.birthday) updatedFields.age = birthday;
-        if (medicalHistory !== initialData.medicalHistory) updatedFields.medicalHistory = medicalHistory;
-        if (heartDisease !== initialData.heartDisease) updatedFields.heartDisease = heartDisease;
-        if (diabetes !== initialData.diabetes) updatedFields.diabetes = diabetes;
-        if (anySurgeries !== initialData.anySurgeries) updatedFields.anySurgeries = anySurgeries;
-        if (eyeHealthHistory !== initialData.eyeHealthHistory) updatedFields.eyeHealthHistory = eyeHealthHistory;
-        if (gender !== initialData.sex) updatedFields.sex = gender;
-        if (password) updatedFields.password = password;
-        console.log(updatedFields);
-
         try {
             const response = await fetch(`http://localhost:5001/api/v1/patients/${Patient_id}`, {
                 method: 'PUT',
@@ -219,8 +201,20 @@ const PatientCreateProfile = ( {type="Create"}) => {
                 },
                 body: JSON.stringify({
 
-                    phoneNumber: updatedFields.phoneNumber
-                }
+                    name,
+                    username,
+                    age,
+                    email,
+                    address,
+                    phoneNumber: phone,
+                    medicalHistory,
+                    heartDisease,
+                    diabetes,
+                    anySurgeries,
+                    eyeHealthHistory,
+                    sex:gender,
+
+                    }
                 ),
             });
             const responseData = await response.json();
@@ -273,6 +267,7 @@ const PatientCreateProfile = ( {type="Create"}) => {
                                 placeholder="First name"
                                 type="text"
                                 value={firstname}
+
                                 onChange={(e) => setFirstName(e.target.value)}
                             />
                           </FormGroup>
