@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Link, useLocation } from 'react-router-dom';
@@ -30,7 +29,7 @@ const AppProfile = () => {
   const [appointmentId, setAppointmentId] = useState(null);
   const [services, setServices] = useState([]);
   const [doctors, setDoctors] = useState([]);
-  let service;
+  const [DoctorsService, setDoctorsService] = useState([]);
 
   useEffect(() => {
     // Fetch the list of available doctors when the component mounts
@@ -39,7 +38,6 @@ const AppProfile = () => {
             const response = await axios.get('http://localhost:5001/api/doctors');
             const doctorsData = response.data;
             setDoctors(doctorsData);
-            
         } catch (error) {
             console.error('Error fetching doctors:', error);
         }
@@ -60,8 +58,6 @@ const AppProfile = () => {
     fetchServices();
 }, []);
 
-
-
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
     const appointmentIdFromUrl = urlParams.get('appointmentId');
@@ -75,27 +71,24 @@ const AppProfile = () => {
 
   const handleServiceSelect = (e) => {
     const selectedServiceId = e.target.value;
+    setServiceId(selectedServiceId);
     // Find the selected service and set the payment amount accordingly
     const selectedService = services.find(service => service._id === selectedServiceId);
     if (selectedService) {
-      const service = selectedService.serviceName; // Define service here
-      console.log(service);
-      setServiceId(service);
       setPaymentAmount(selectedService.payment.amount.toString());
-      // setDoctors(selectedService.doctors);
+      setDoctorsService(selectedService.DoctorsService);
     }
   };
-  
 
   const fetchAppointmentDetails = async (id) => {
     try {
       const response = await axios.get(`http://localhost:5001/api/v1/appointments/${id}`);
       const appointmentData = response.data.data.appointment;
       setPatientId(appointmentData.patientId);
-      setDoctorId("");
+      setDoctorId("4");
       setTime(appointmentData.time);
       setSelectedDate(new Date(appointmentData.date));
-      setServiceId(service);
+      setServiceId(appointmentData.serviceId);
       setPaymentAmount(appointmentData.payment.amount);
       setStatus("pending");
     } catch (error) {
@@ -243,7 +236,7 @@ const AppProfile = () => {
                           <Input
                             type="select"
                             className="form-control-alternative"
-                            value={service}
+                            value={serviceId}
                             onChange={handleServiceSelect} // Call handleServiceSelect when service is selected
                           >
                             <option>Select a service</option>
@@ -262,7 +255,7 @@ const AppProfile = () => {
                           >
                             <option>Select a doctor</option>
                             {doctors.map(doctor => (
-                              <option key={doctor._id} value={`${doctor.firstName} ${doctor.lastName}`}>{doctor.firstName} {doctor.lastName}</option>
+                              <option key={doctor._id} value={doctor._id}>{doctor.firstName} {doctor.lastName}</option>
                             ))}
                           </Input>
                         </FormGroup>

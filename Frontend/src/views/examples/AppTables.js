@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
-import { Button } from "reactstrap";
 import {
+  Button,
   Badge,
   Card,
   CardHeader,
@@ -15,34 +15,33 @@ import {
   Pagination,
   PaginationItem,
   PaginationLink,
-  Progress,
   Table,
   Container,
   Row,
-  Col,
-  UncontrolledTooltip,
+  Col
 } from 'reactstrap';
 import AppTableHeader from "components/Headers/AppTableHeader";
 
-
 const AppTables = () => {
+  let [app_id, setAppId] = useState(null); // Change const to let for app_id
   const [appointments, setAppointments] = useState([]);
   const [totalAppointments, setTotalAppointments] = useState(0);
 
   useEffect(() => {
-    
     const fetchAppointments = async () => {
       try {
         const response = await axios.get('http://localhost:5001/api/v1/appointments');
         setAppointments(response.data.data.appointments);
         setTotalAppointments(response.data.data.appointments.length);
+        setAppId(response.data.data.appointments[0]?._id); // Set app_id when appointments are fetched
       } catch (error) {
         console.error('Error fetching appointments:', error);
       }
     };
 
     fetchAppointments();
-  }, []);
+  }, [appointments]); // Run useEffect whenever appointments change
+
   const handleApproveAppointment = async (id) => {
     try {
       const response = await axios.put(`http://localhost:5001/api/v1/appointments/${id}`, { status: 'scheduled' });
@@ -70,6 +69,7 @@ const AppTables = () => {
       console.error('Error canceling appointment:', error);
     }
   };
+
   const handleDeleteAppointment = async (id) => {
     try {
       const response = await axios.delete(`http://localhost:5001/api/v1/appointments/${id}`);
@@ -78,8 +78,6 @@ const AppTables = () => {
         alert("Appointment successfully deleted.");
         setAppointments(updatedAppointments);
         window.location.reload();
-       
-
       }
     } catch (error) {
       alert("Failed to delete Appointment.");
@@ -87,6 +85,12 @@ const AppTables = () => {
     }
   };
 
+  const handleUpdateAppointment = (id) => {
+    // Navigate to the update page with the appointment ID
+    console.log("Updating appointment with ID:", id);
+    window.location.href = `/admin/CreateAppointment?appointmentId=${id}`;
+    setAppId(id); // Update app_id
+  };
 
   return (
     <>
@@ -95,18 +99,18 @@ const AppTables = () => {
         <Row>
           <div className="col">
             <Card className="shadow">
-               <CardHeader className="border-0">
-      <Row className="align-items-center">
-        <Col>
-          <h3 className="mb-0">Appointments Schedule</h3>
-        </Col>
-        <Col className="text-right">
-          <Link to="/admin/CreateAppointment">
-            <Button color="primary">Add Appointment</Button>
-          </Link>
-        </Col>
-      </Row>
-    </CardHeader>
+              <CardHeader className="border-0">
+                <Row className="align-items-center">
+                  <Col>
+                    <h3 className="mb-0">Appointments Schedule</h3>
+                  </Col>
+                  <Col className="text-right">
+                    <Link to="/admin/CreateAppointment">
+                      <Button color="primary">Add Appointment</Button>
+                    </Link>
+                  </Col>
+                </Row>
+              </CardHeader>
               <Table className="align-items-center table-flush" responsive>
                 <thead className="thead-light">
                   <tr>
@@ -170,14 +174,13 @@ const AppTables = () => {
                               Delete Appointment
                             </DropdownItem>
                             <Link to={{
-                                  pathname: '/admin/CreateAppointment',
-                                  state: { appointmentId: appointment._id }
-                                }}
-                              >
-                                <DropdownItem>
-                                  Update Appointment
-                                </DropdownItem>
-                              </Link>
+                              pathname: '/admin/CreateAppointment',
+                              state: { appointmentId: app_id }
+                            }}>
+                              <DropdownItem onClick={() => handleUpdateAppointment(appointment._id)}>
+                                Update Appointment
+                              </DropdownItem>
+                            </Link>
                           </DropdownMenu>
                         </UncontrolledDropdown>
                       </td>
@@ -227,6 +230,7 @@ const AppTables = () => {
       </Container>
     </>
   );
+
 };
 
 export default AppTables;

@@ -1,52 +1,28 @@
-
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import { Link, useLocation } from 'react-router-dom';
-import {
-  Button,
-  Card,
-  CardHeader,
-  CardBody,
-  FormGroup,
-  Form,
-  Input,
-  Container,
-  Row,
-  Col
-} from "reactstrap";
+import React, { useState,useEffect } from 'react';
+import { Button, Card, CardHeader, CardBody, FormGroup, Form, Input, Container, Row, Col } from "reactstrap";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import axios from 'axios';
+import { Link, useLocation } from 'react-router-dom';
 import AppHeader from "components/Headers/AppHeader.js";
+//lesa 3yzen nzwd en a7na na5od mn patient id w nt2kd eno mwgod fe dataset
+//w en id dr yb2 3la 7sb service 
+//w en payment tb2 3la 7sb service
 
 const AppProfile = () => {
   const location = useLocation();
+
   const [selectedDate, setSelectedDate] = useState(null);
   const [patientId, setPatientId] = useState("");
   const [doctorId, setDoctorId] = useState("4");
-  const [time, setTime] = useState("");
+  const [time, setTime] = useState(""); 
   const [serviceId, setServiceId] = useState("");
   const [paymentAmount, setPaymentAmount] = useState("");
   const [status, setStatus] = useState("pending");
+  const [isUpdate, setIsUpdate] = useState(false);
   const [appointmentId, setAppointmentId] = useState(null);
   const [services, setServices] = useState([]);
   const [doctors, setDoctors] = useState([]);
-  let service;
-
-  useEffect(() => {
-    // Fetch the list of available doctors when the component mounts
-    const fetchDoctors = async () => {
-        try {
-            const response = await axios.get('http://localhost:5001/api/doctors');
-            const doctorsData = response.data;
-            setDoctors(doctorsData);
-            
-        } catch (error) {
-            console.error('Error fetching doctors:', error);
-        }
-    };
-    fetchDoctors();
-}, []);
-
   useEffect(() => {
     const fetchServices = async () => {
         try {
@@ -59,66 +35,66 @@ const AppProfile = () => {
     };
     fetchServices();
 }, []);
+  // useEffect(() => {
+  //   if (location.state && location.state.appointmentId) {
+  //     const appointmentId = location.state.appointmentId;
+  //     setAppointmentId(appointmentId);
+  //     const fetchAppointment = async () => {
+  //       try {
+  //         const response = await axios.get(`http://localhost:5001/api/v1/appointments/${appointmentId}`);
+  //         const appointmentData = response.data.data.appointment;
+  //         setSelectedDate(new Date(appointmentData.date));
+  //         setPatientId(appointmentData.patientId);
+  //         setDoctorId(appointmentData.doctorId);
+  //         setTime(appointmentData.time);
+  //         setServiceId(appointmentData.serviceId);
+  //         setPaymentAmount(appointmentData.payment.amount.toString());
+  //         setStatus(appointmentData.status);
+  //         setIsUpdate(true);
 
-
-
-  useEffect(() => {
-    const urlParams = new URLSearchParams(window.location.search);
-    const appointmentIdFromUrl = urlParams.get('appointmentId');
-    if (appointmentIdFromUrl) {
-      setAppointmentId(appointmentIdFromUrl);
-      fetchAppointmentDetails(appointmentIdFromUrl);
-    } else {
-      console.log("No appointmentId found in URL query parameters");
-    }
-  }, []);
+  //       } catch (error) {
+  //         console.error('Error fetching appointment:', error);
+  //       }
+  //     };
+  //     fetchAppointment();
+  //   }
+  // }, [location.state]);
 
   const handleServiceSelect = (e) => {
     const selectedServiceId = e.target.value;
+    setServiceId(selectedServiceId);
     // Find the selected service and set the payment amount accordingly
     const selectedService = services.find(service => service._id === selectedServiceId);
     if (selectedService) {
-      const service = selectedService.serviceName; // Define service here
-      console.log(service);
-      setServiceId(service);
       setPaymentAmount(selectedService.payment.amount.toString());
-      // setDoctors(selectedService.doctors);
-    }
-  };
-  
-
-  const fetchAppointmentDetails = async (id) => {
-    try {
-      const response = await axios.get(`http://localhost:5001/api/v1/appointments/${id}`);
-      const appointmentData = response.data.data.appointment;
-      setPatientId(appointmentData.patientId);
-      setDoctorId("");
-      setTime(appointmentData.time);
-      setSelectedDate(new Date(appointmentData.date));
-      setServiceId(service);
-      setPaymentAmount(appointmentData.payment.amount);
-      setStatus("pending");
-    } catch (error) {
-      console.error('Error fetching appointment details:', error);
+      setDoctors(selectedService.doctors);
     }
   };
 
-  const handleSave = async () => {
+  const handleBooking = async () => {
     try {
-      if (!selectedDate || !patientId || !time || !serviceId || !paymentAmount) {
+      if (!selectedDate || !patientId || !doctorId || !time || !serviceId || !paymentAmount) {
         console.error('Please fill all fields');
         alert('Please fill all fields');
         return;
       }
-  
-      // Format the selected date as "MM/DD/YYYY"
-      const formattedDate = selectedDate.toLocaleDateString('en-US', {
-        year: 'numeric',
-        month: '2-digit',
-        day: '2-digit'
+
+      // Format the selected date as "YYYY-MM-DD"
+      const formattedDate = selectedDate.toISOString().split('T')[0];
+
+      // Check if there's already an appointment with the same date, time, and service
+      const existingAppointmentsResponse = await axios.get('http://localhost:5001/api/v1/appointments');
+      const existingAppointments = existingAppointmentsResponse.data.data.appointments;
+      const conflictingAppointment = existingAppointments.find(appointment => {
+        return appointment.serviceId === serviceId && appointment.time === time && appointment.date === formattedDate;
       });
-  
-      // Update state variables with the new data entered by the user
+
+      if (conflictingAppointment) {
+        // There's a conflicting appointment
+        alert('This time slot is already reserved. Please choose another time.');
+        return;
+      }
+
       const appointmentData = {
         patientId,
         doctorId,
@@ -130,41 +106,28 @@ const AppProfile = () => {
           amount: paymentAmount
         }
       };
-  
-      if (appointmentId) {
-        // Update existing appointment
-        const response = await axios.put(`http://localhost:5001/api/v1/appointments/${appointmentId}`, appointmentData);
-        if (response.data.status === 'success') {
-          setPaymentAmount(response.data.data.appointment.payment.amount);
-          console.log('Appointment updated successfully');
-          alert('Appointment updated successfully');
-        }
+
+      if (isUpdate) {
+        // Update the existing appointment
+        const updateResponse = await axios.put(`http://localhost:5001/api/v1/appointments/${appointmentId}`, appointmentData);
+        console.log('Appointment updated successfully:', updateResponse.data);
+        alert('Appointment updated successfully');
       } else {
-        // Create new appointment
-        const response = await axios.post('http://localhost:5001/api/v1/appointments', appointmentData);
-        if (response.data.status === 'success') {
-          console.log('Appointment created successfully');
-          alert('Appointment created successfully');
-        }
+        // Create a new appointment
+        const bookingResponse = await axios.post('http://localhost:5001/api/v1/appointments', appointmentData);
+        console.log('Appointment booked successfully:', bookingResponse.data);
+        alert('Appointment booked successfully');
       }
-  
-      // Reset form fields after successful action
-      setPatientId("");
-      setTime("");
-      setSelectedDate(null);
-      setServiceId("");
-      setPaymentAmount("");
-      setStatus("pending");
+
     } catch (error) {
-      console.error('Error handling appointment:', error);
-      alert('Error handling appointment');
+      console.error('Error booking/updating appointment:', error.response.data);
+      alert('Error booking/updating appointment');
     }
   };
-  
-  
+
   return (
     <>
-      <AppHeader />
+     <AppHeader />
       <Container className="mt--7" fluid>
         <Row>
           <Col className="order-xl-1" xl="8">
@@ -172,12 +135,7 @@ const AppProfile = () => {
               <CardHeader className="bg-white border-0">
                 <Row className="align-items-center">
                   <Col xs="8">
-                    <h3 className="mb-0">{appointmentId ? 'Update Appointment' : 'Create Appointment'}</h3>
-                  </Col>
-                  <Col className="text-right" xs="4">
-                    <Link to="/admin/CreateAppointment">
-                      <Button color="primary">Back</Button>
-                    </Link>
+                    <h3 className="mb-0">Appointment Scheduling</h3>
                   </Col>
                 </Row>
               </CardHeader>
@@ -190,8 +148,8 @@ const AppProfile = () => {
                     <Row>
                       <Col lg="6">
                         <FormGroup>
-                          <label className="form-control-label" htmlFor="input-patient-id">
-                            Patient ID
+                          <label className="form-control-label" htmlFor="input-username">
+                            Patient Id
                           </label>
                           <Input
                             className="form-control-alternative"
@@ -199,7 +157,6 @@ const AppProfile = () => {
                             onChange={(e) => setPatientId(e.target.value)}
                             placeholder="Patient ID"
                             type="text"
-                            id="input-patient-id"
                           />
                         </FormGroup>
                       </Col>
@@ -243,7 +200,7 @@ const AppProfile = () => {
                           <Input
                             type="select"
                             className="form-control-alternative"
-                            value={service}
+                            value={serviceId}
                             onChange={handleServiceSelect} // Call handleServiceSelect when service is selected
                           >
                             <option>Select a service</option>
@@ -262,7 +219,7 @@ const AppProfile = () => {
                           >
                             <option>Select a doctor</option>
                             {doctors.map(doctor => (
-                              <option key={doctor._id} value={`${doctor.firstName} ${doctor.lastName}`}>{doctor.firstName} {doctor.lastName}</option>
+                              <option key={doctor._id} value={doctor._id}>{doctor.firstName} {doctor.lastName}</option>
                             ))}
                           </Input>
                         </FormGroup>
@@ -279,14 +236,18 @@ const AppProfile = () => {
                         </FormGroup>
                       </Col>
                     </Row>
+                    <Link to={{
+                                  pathname: '/admin/Appointments'
+                                }}>
                     <Button
                       color="primary"
-                      onClick={handleSave}
+                      onClick={handleBooking}
                       size="lg"
                       className="float-right"
                     >
-                      {appointmentId ? 'Update' : 'Book'}
+                      {isUpdate ? 'Update' : 'Book'}
                     </Button>
+                    </Link>
                   </div>
                 </Form>
               </CardBody>
