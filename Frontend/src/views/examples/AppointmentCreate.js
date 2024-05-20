@@ -231,6 +231,7 @@ const AppProfile = () => {
                             value={paymentAmount}
                             onChange={(e) => setPaymentAmount(e.target.value)}
                             placeholder="Payment Amount"
+                            readOnly 
                           />
                         </FormGroup>
                       </Col>
