@@ -1,21 +1,38 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button, Card, CardHeader, CardBody, FormGroup, Form, Input, Container, Row, Col } from "reactstrap";
 import axios from 'axios';
 import ServiceHeader from "components/Headers/ServiceHeader.js";
 
 const ServiceCreate = () => {
-    const [doctorId, setDoctorId] = useState('');
+    const [doctors, setDoctors] = useState([]);
+    const [selectedDoctorId, setSelectedDoctorId] = useState('');
     const [serviceId, setServiceId] = useState('');
     const [paymentAmount, setPaymentAmount] = useState('');
 
+    useEffect(() => {
+        // Fetch the list of available doctors when the component mounts
+        const fetchDoctors = async () => {
+            try {
+                const response = await axios.get('http://localhost:5001/api/doctors');
+                const doctorsData = response.data;
+                setDoctors(doctorsData);
+            } catch (error) {
+                console.error('Error fetching doctors:', error);
+            }
+        };
+        fetchDoctors();
+    }, []);
+
     const handleAddDoctor = async (e) => {
         e.preventDefault();
-        const doctorData = {
-            serviceName: serviceId,
-            doctorId: doctorId
-        };
 
         try {
+            // Proceed with adding the selected doctor to the service
+            const doctorData = {
+                serviceName: serviceId,
+                doctorId: selectedDoctorId
+            };
+
             const response = await axios.post('http://localhost:5001/api/v1/services/add-doctor', doctorData);
             console.log('Doctor added:', response.data);
             alert('Doctor added successfully');
@@ -29,7 +46,7 @@ const ServiceCreate = () => {
         e.preventDefault();
         const serviceData = {
             serviceName: serviceId,
-            doctors: [doctorId], // Initial doctor ID as an array
+            doctors: [selectedDoctorId], // Initial doctor ID as an array
             payment: {
                 amount: paymentAmount
             }
@@ -68,17 +85,22 @@ const ServiceCreate = () => {
                                         <Row>
                                             <Col lg="6">
                                                 <FormGroup>
-                                                    <label className="form-control-label" htmlFor="input-username">
-                                                        Doctor Id
+                                                    <label className="form-control-label" htmlFor="select-doctor">
+                                                        Select Doctor
                                                     </label>
                                                     <Input
+                                                        type="select"
+                                                        id="select-doctor"
                                                         className="form-control-alternative"
-                                                        value={doctorId}
-                                                        onChange={(e) => setDoctorId(e.target.value)}
-                                                        placeholder="e.g. doctor1"
-                                                        type="text"
+                                                        value={selectedDoctorId}
+                                                        onChange={(e) => setSelectedDoctorId(e.target.value)}
                                                         required
-                                                    />
+                                                    >
+                                                        <option value="">Select a doctor</option>
+                                                        {doctors.map(doctor => (
+                                                            <option key={doctor._id} value={doctor._id}>{doctor.firstName} {doctor.lastName}</option>
+                                                        ))}
+                                                    </Input>
                                                 </FormGroup>
                                             </Col>
                                         </Row>
@@ -156,8 +178,8 @@ const ServiceCreate = () => {
                                                     </label>
                                                     <Input
                                                         className="form-control-alternative"
-                                                        value={doctorId}
-                                                        onChange={(e) => setDoctorId(e.target.value)}
+                                                        value={selectedDoctorId}
+                                                        onChange={(e) => setSelectedDoctorId(e.target.value)}
                                                         placeholder="Doctor ID"
                                                         type="text"
                                                         required

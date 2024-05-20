@@ -21,31 +21,55 @@ const AppProfile = () => {
   const [status, setStatus] = useState("pending");
   const [isUpdate, setIsUpdate] = useState(false);
   const [appointmentId, setAppointmentId] = useState(null);
-
+  const [services, setServices] = useState([]);
+  const [doctors, setDoctors] = useState([]);
   useEffect(() => {
-    if (location.state && location.state.appointmentId) {
-      const appointmentId = location.state.appointmentId;
-      setAppointmentId(appointmentId);
-      const fetchAppointment = async () => {
+    const fetchServices = async () => {
         try {
-          const response = await axios.get(`http://localhost:5001/api/v1/appointments/${appointmentId}`);
-          const appointmentData = response.data.data.appointment;
-          setSelectedDate(new Date(appointmentData.date));
-          setPatientId(appointmentData.patientId);
-          setDoctorId(appointmentData.doctorId);
-          setTime(appointmentData.time);
-          setServiceId(appointmentData.serviceId);
-          setPaymentAmount(appointmentData.payment.amount.toString());
-          setStatus(appointmentData.status);
-          setIsUpdate(true);
-
+            const response = await axios.get('http://localhost:5001/api/v1/services');
+            const servicesData = response.data.data.services;
+            setServices(servicesData);
         } catch (error) {
-          console.error('Error fetching appointment:', error);
+            console.error('Error fetching services:', error);
         }
-      };
-      fetchAppointment();
+    };
+    fetchServices();
+}, []);
+  // useEffect(() => {
+  //   if (location.state && location.state.appointmentId) {
+  //     const appointmentId = location.state.appointmentId;
+  //     setAppointmentId(appointmentId);
+  //     const fetchAppointment = async () => {
+  //       try {
+  //         const response = await axios.get(`http://localhost:5001/api/v1/appointments/${appointmentId}`);
+  //         const appointmentData = response.data.data.appointment;
+  //         setSelectedDate(new Date(appointmentData.date));
+  //         setPatientId(appointmentData.patientId);
+  //         setDoctorId(appointmentData.doctorId);
+  //         setTime(appointmentData.time);
+  //         setServiceId(appointmentData.serviceId);
+  //         setPaymentAmount(appointmentData.payment.amount.toString());
+  //         setStatus(appointmentData.status);
+  //         setIsUpdate(true);
+
+  //       } catch (error) {
+  //         console.error('Error fetching appointment:', error);
+  //       }
+  //     };
+  //     fetchAppointment();
+  //   }
+  // }, [location.state]);
+
+  const handleServiceSelect = (e) => {
+    const selectedServiceId = e.target.value;
+    setServiceId(selectedServiceId);
+    // Find the selected service and set the payment amount accordingly
+    const selectedService = services.find(service => service._id === selectedServiceId);
+    if (selectedService) {
+      setPaymentAmount(selectedService.payment.amount.toString());
+      setDoctors(selectedService.doctors);
     }
-  }, [location.state]);
+  };
 
   const handleBooking = async () => {
     try {
@@ -174,13 +198,31 @@ const AppProfile = () => {
                         <FormGroup>
                           <label>Service</label>
                           <Input
-                            type="text"
+                            type="select"
                             className="form-control-alternative"
                             value={serviceId}
-                            onChange={(e) => setServiceId(e.target.value)}
-                            placeholder="Service ID"
-                          />
+                            onChange={handleServiceSelect} // Call handleServiceSelect when service is selected
+                          >
+                            <option>Select a service</option>
+                            {services.map(service => (
+                              <option key={service._id} value={service._id}>{service.serviceName}</option>
+                            ))}
+                          </Input>
                         </FormGroup>
+                        {/* <FormGroup>
+                          <label>Doctor</label>
+                          <Input
+                            type="select"
+                            className="form-control-alternative"
+                            value={doctorId}
+                            onChange={(e) => setDoctorId(e.target.value)}
+                          >
+                            <option>Select a doctor</option>
+                            {doctors.map(doctor => (
+                              <option key={doctor._id} value={doctor._id}>{doctor.first} {doctor.lastName}</option>
+                            ))}
+                          </Input>
+                        </FormGroup> */}
                         <FormGroup>
                           <label>Payment Amount</label>
                           <Input
