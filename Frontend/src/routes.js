@@ -16,6 +16,7 @@ import AppProfile from "views/examples/AppointmentCreate";
 // import DoctorCreateProfile from "views/examples/DoctorCreateProfile";
 import DoctorTable from "./views/examples/DoctorTable";
 import DoctorSeeProfile from "views/examples/DoctorSeeProfile";
+import ServiceCreate from "views/examples/ServiceCreate";
 
 var routes = [
   {
@@ -50,23 +51,11 @@ var routes = [
     component: <DoctorTable />,
     layout: "/admin",
   },
-  {
+  { path:"/Appointments",
     name: "Appointment",
     icon: "ni ni-calendar-grid-58",
-    children: [
-      {
-        name: "Create Appointment",
-        path: "/CreateAppointment",
-        icon:"ni ni-bold-right",
-        component: <AppProfile/>,
-        layout: "/admin",
-      },
-     { name: "View Appointments",
-     path:"/Appointments",
-     icon: "ni ni-bold-right",
-     component: <AppTables />,
-     layout: "/admin",},
-    ]
+    component: <AppTables />,
+    layout: "/admin",
   },
   {
     path: "/Prescription",
@@ -76,10 +65,10 @@ var routes = [
     layout: "/admin",
   },
   {
-    path: "/Payment",
-    name: "Payment",
+    path: "/Service",
+    name: "Service",
     icon: "ni ni-money-coins",
-    component: <Tables/>,
+    component: <ServiceCreate/>,
     layout: "/admin",
   },
   {
