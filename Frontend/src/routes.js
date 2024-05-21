@@ -37,16 +37,16 @@ var routes = [
 
 
   
-  {
-    path: "/CreateDoctor",
-    name: "Create Doctor",
-    icon: "ni ni-badge",
-    component: <DoctorCreateProfile />,
-    layout: "/admin",
-  },
+  // {
+  //   path: "/CreateDoctor",
+  //   name: "Create Doctor",
+  //   icon: "ni ni-badge",
+  //   component: <DoctorCreateProfile />,
+  //   layout: "/admin",
+  // },
   {
     path: "/Doctorslist",
-    name: "Doctors List",
+    name: "Doctors",
     icon: "ni ni-badge",
     component: <DoctorTable />,
     layout: "/admin",
@@ -106,6 +106,7 @@ var routes = [
       component: <DoctorSeeProfile />,  //sheel el arraf da lama te32al we 3adel fe file index.js
       layout: "/admin",
     },
+
     {
       path: "/PatientsUpdate",
       path: "/PatientsUpdate/:Patient_id",
@@ -113,6 +114,14 @@ var routes = [
       layout: "/admin",
       hidden: true  // Add this property
     },
+
+      {
+    path: "/CreateDoctor",
+    name: "",
+    icon: "",
+    component: <DoctorCreateProfile />,
+    layout: "/admin",
+  },
  
 ];
 export default routes;
