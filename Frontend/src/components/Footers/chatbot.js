@@ -16,7 +16,7 @@ export default function App() {
     { text: "Hello and thank you for visiting MDBootstrap. Please click the video below.", sender: "bot" }
   ]);
   const [inputMessage, setInputMessage] = useState('');
-  const [isOpen, setIsOpen] = useState(true);  // State to manage the visibility of the chatbot
+  const [isOpen, setIsOpen] = useState(false);  // State to manage the visibility of the chatbot
 
   const handleSendMessage = () => {
     if (inputMessage.trim()) {
