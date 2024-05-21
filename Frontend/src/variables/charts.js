@@ -319,7 +319,7 @@ let chartExample1 = {
           ticks: {
             callback: function (value) {
               if (!(value % 10)) {
-                return "$" + value + "k";
+                return value;
               }
             },
           },
@@ -337,7 +337,7 @@ let chartExample1 = {
             content += label;
           }
 
-          content += "$" + yLabel + "k";
+          content += yLabel;
           return content;
         },
       },
@@ -345,22 +345,16 @@ let chartExample1 = {
   },
   data1: (canvas) => {
     return {
-      labels: ["May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+      labels: ["Service 1", "Service 2", "Service 3", "Service 4", "Service 5", "Service 6", "Service 7", "Service 8"],
       datasets: [
         {
-          label: "Performance",
-          data: [0, 20, 10, 30, 15, 40, 20, 60, 60],
-        },
-      ],
-    };
-  },
-  data2: (canvas) => {
-    return {
-      labels: ["May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
-      datasets: [
-        {
-          label: "Performance",
-          data: [0, 20, 5, 25, 10, 30, 15, 40, 40],
+          label: "Number of Uses",
+          data: [120, 115, 134, 150, 160, 175, 190, 200], // Sample data
+          backgroundColor: "#11cdef",
+          borderColor: "#11cdef",
+          borderWidth: 2,
+          hoverBackgroundColor: "#11cdef",
+          hoverBorderColor: "#ffffff",
         },
       ],
     };

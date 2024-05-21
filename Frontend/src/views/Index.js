@@ -23,10 +23,10 @@ import Header from "components/Headers/Header.js";
 const Index = () => {
   const [activeNav, setActiveNav] = useState(1);
   const [chartExample1Data, setChartExample1Data] = useState("data1");
+  const [serviceData, setServiceData] = useState(chartExample1.data); // State for appointment data
   const [chartData, setChartData] = useState(chartExample2.data); // State for appointment data
   const [ageData, setAgeData] = useState(chartExample3.data); // State for age distribution data
   const [genderData, setGenderData] = useState(chartExample4.data);
-
   useEffect(() => {
     if (window.Chart) {
       parseOptions(Chart, chartOptions());
@@ -34,28 +34,59 @@ const Index = () => {
     fetchAppointmentData();
     fetchAgeDistributionData();
     fetchGenderData();
+    fetchServices();
   }, []);
+  const fetchServices = async () => {
+    try {
+      const response = await axios.get('http://localhost:5001/api/v1/services');
+      const servicesData = response.data.data.services;
+  
+      // Create an object to count each type of service
+      const serviceCounts = servicesData.reduce((acc, service) => {
+        // Assuming each service has a 'name' property
+        acc[service.name] = (acc[service.name] || 0) + 1;
+        return acc;
+      }, {});
+  
+      // Update the chart data
+      setServiceData({
+        labels: Object.keys(serviceCounts), // service names as labels
+        datasets: [{
+          label: 'Number of Services',
+          data: Object.values(serviceCounts), // count of each service
+          backgroundColor: Array(Object.keys(serviceCounts).length).fill('#11cdef'), // Adjust color as needed
+          hoverBackgroundColor: Array(Object.keys(serviceCounts).length).fill('#ffffff')
+        }]
+      });
+    } catch (error) {
+      console.error('Error fetching services:', error);
+    }
+  };
+  
 
   const fetchAppointmentData = async () => {
     try {
       const response = await axios.get('http://localhost:5001/api/v1/appointments');
       const appointments = response.data.data.appointments;
-      const dates = appointments.map(appointment => appointment.date);
-      const dateCounts = dates.reduce((acc, date) => {
-        acc[date] = (acc[date] || 0) + 1;
+      const monthCounts = appointments.reduce((acc, appointment) => {
+        // Extract the month from the date string (assumes date format as 'YYYY-MM-DD')
+        const month = new Date(appointment.date).getMonth() + 1; // getMonth() returns 0-11, so add 1 for 1-12
+        acc[month] = (acc[month] || 0) + 1;
         return acc;
       }, {});
+      
       setChartData({
-        labels: Object.keys(dateCounts),
+        labels: Object.keys(monthCounts).map(month => `Month ${month}`), // Label each month
         datasets: [{
-          label: 'Number of Appointments',
-          data: Object.values(dateCounts)
+          label: 'Number of Appointments per Month',
+          data: Object.values(monthCounts)
         }]
       });
     } catch (error) {
       console.error('Error fetching appointment data:', error);
     }
   };
+  
 
   const fetchAgeDistributionData = async () => {
     try {
@@ -113,16 +144,16 @@ const Index = () => {
             <Row>
               <Col xl="12">
                 <Card className="bg-gradient-default shadow">
-                  <CardHeader className="bg-transparent">
-                    <h6 className="text-uppercase text-light ls-1 mb-1">Overview</h6>
-                    <h2 className="text-white mb-0">Sales value</h2>
-                  </CardHeader>
-                  <CardBody>
-                    <Line
-                      data={chartExample1[chartExample1Data]}
-                      options={chartExample1.options}
-                    />
-                  </CardBody>
+                <CardHeader className="bg-transparent">
+                  <h6 className="text-uppercase text-light ls-1 mb-1">Overview</h6>
+                  <h2 className="text-white mb-0">Service Usage</h2>
+                </CardHeader>
+                <CardBody>
+                  <Bar
+                    data={serviceData} // Make sure you are calling the correct data function if it's dynamic
+                    options={chartExample1.options}
+                  />
+                </CardBody>
                 </Card>
               </Col>
               <Col xl="12">

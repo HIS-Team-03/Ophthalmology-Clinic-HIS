@@ -10,25 +10,43 @@ const Header = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
+        // Fetching doctors
+        const fetchTotalDoctors = async () => {
+          try {
+            const response = await axios.get("http://localhost:5001/api/doctors");
+            const doctorCount = response.data.length;
+            setTotalDoctors(doctorCount);
+          } catch (error) {
+            console.error('Error fetching total doctors:', error);
+          }
+        };
+        fetchTotalDoctors();
+
+        // Fetching patients
         const patientsRes = await axios.get('http://localhost:5001/api/v1/patients');
         console.log("Patients:", patientsRes.data.data.patients);
         setTotalPatients(patientsRes.data.data.patients.length);
-  
-        const doctorsRes = await axios.get('http://localhost:5001/api/v1/doctors');
-        console.log("Doctors:", doctorsRes.data.data.doctors);
-        setTotalDoctors(doctorsRes.data.data.doctors.length);
-  
-        const appointmentsRes = await axios.get('http://localhost:5001/api/v1/appointments');
-        console.log("Appointments:", appointmentsRes.data.data.appointments);
-        setTotalAppointments(appointmentsRes.data.data.appointments.length);
+
+        // Fetching appointments
+        const fetchTotalAppointments = async () => {
+          try {
+            const response = await axios.get('http://localhost:5001/api/v1/appointments');
+            const appointmentCount = response.data.data.appointments.length;
+            setTotalAppointments(appointmentCount);
+          } catch (error) {
+            console.error('Error fetching total appointments:', error);
+          }
+        };
+        fetchTotalAppointments();
+
       } catch (error) {
         console.error('Error fetching data:', error);
       }
     };
-  
+
     fetchData();
   }, []);
-  
+
 
   return (
     <>
