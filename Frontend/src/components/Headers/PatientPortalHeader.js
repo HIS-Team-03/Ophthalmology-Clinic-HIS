@@ -2,7 +2,9 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Card, CardBody, CardTitle, Container, Row, Col } from "reactstrap";
 
-const PatientPortalHeader = () => {
+const PatientPortalHeader = ({pt_id}) => {
+    console.log("pt_idd",pt_id)
+    let patient_id = pt_id['*']
 
   return (
     <>
@@ -24,7 +26,7 @@ const PatientPortalHeader = () => {
         Create Appointment
       </a>
 
-      <a href="/patient-PortalEMR"
+      <a href={`/patient-PortalEMR/${patient_id}`}
          style={{
           padding: '10px 20px',
           // backgroundColor: '#28a745',

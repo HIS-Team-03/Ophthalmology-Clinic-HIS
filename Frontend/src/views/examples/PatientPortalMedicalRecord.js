@@ -9,11 +9,14 @@ import {useEffect, useState} from "react";
 import axios from "axios";
 import PatientCreateHeader from "../../components/Headers/PatientCreateHeader";
 import AdminNavbar from "../../components/Navbars/AdminNavbar";
-
 const PatientPortalMedicalRecord = () => {
   const [patientData, setPatientData] = useState({});
 
+
   const id= "cb3b7b6fb172"
+  const md_id= useParams()
+  // console.log("md_id",md_id['*'])
+  let medical_id  = md_id['*']
 
   useEffect(() => {
     fetchPatient();
@@ -22,7 +25,7 @@ const PatientPortalMedicalRecord = () => {
   const Prescription = {"Medicine": "Paracetamol", "Dosage": "2 tablets", "Frequency": "3 times a day", "Duration": "5 days"}
 
   const fetchPatient = async () => {
-    const response = await axios.get(`http://localhost:5001/api/v1/patients/cb3b7b6fb172`);
+    const response = await axios.get(`http://localhost:5001/api/v1/patients/${medical_id}`);
     setPatientData(response.data.data.Patient);
 
   };
