@@ -89,6 +89,14 @@ const patientscheme = new mongoose.Schema({
     default: "",
     required: [true, "A patient must have an eye health history"],
   },
+  sex: {
+    type: String,
+    required: [true, "A patient must specify their sex"],
+    enum: {
+      values: ['Male', 'Female', 'Other'],
+      message: 'Sex must be either Male, Female, or Other'
+    }
+  },
   password: {
     type: String,
     required: [true, "A patient must have a password"],

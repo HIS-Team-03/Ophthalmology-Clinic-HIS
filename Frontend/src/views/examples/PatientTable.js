@@ -86,6 +86,7 @@ const deletePatient = async (id) => {
                     <th scope="col">Phone Number</th>
                     <th scope="col">Doctor Name</th>
                     <th scope="col">Age</th>
+                    <th scope="col">Gender</th>
                     <th scope="col">Patient ID</th>
                     <th scope="col"/>
                     <th scope="col"/>
@@ -105,6 +106,7 @@ const deletePatient = async (id) => {
                           <td>{patient.phoneNumber}</td>
                           <td>{patient.doctorName}</td>
                           <td>{patient.age}</td>
+                          <td>{patient.sex}</td>
                           <td>{patient._id}</td>
                           {/*<td className="text-right">*/}
                           {/*    <Link to={`/admin/PatientsUpdate`}>*/}
