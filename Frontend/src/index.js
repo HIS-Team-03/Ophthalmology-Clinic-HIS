@@ -11,6 +11,8 @@ import AdminLayout from "layouts/Admin.js";
 import AuthLayout from "layouts/Auth.js";
 import DoctorEditProfile from "./views/examples/DoctorEditProfile";
 import DoctorSeeProfile from "views/examples/DoctorSeeProfile";
+import PatientDashboard from "./views/examples/PatientDashboard";
+import PatientPortalMedicalRecord from "./views/examples/PatientPortalMedicalRecord";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
@@ -23,6 +25,8 @@ root.render(
       {<Route path="/admin/EditDoctor/*" element={<DoctorEditProfile/>} />}
       {/* {<Route path="/admin/SeeDoctor/*" element={<DoctorSeeProfile/>} />} */}  
        { /* incomment el foo2 we balash arraf */}
+        {<Route path="/patient-dashboard" element={<PatientDashboard/>} />}
+        {<Route path="/patient-PortalEMR" element={<PatientPortalMedicalRecord/>} />}
     </Routes>
   </BrowserRouter>
 );
