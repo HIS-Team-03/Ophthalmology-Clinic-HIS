@@ -12,8 +12,9 @@ import AdminNavbar from "../../components/Navbars/AdminNavbar";
 
 const PatientPortalMedicalRecord = () => {
   const [patientData, setPatientData] = useState({});
-
-  const id= "cb3b7b6fb172"
+  // const { id } = useParams();
+  // console.log(id);
+  const id=  '13d1d7ac140e';
 
   useEffect(() => {
     fetchPatient();
@@ -22,7 +23,7 @@ const PatientPortalMedicalRecord = () => {
   const Prescription = {"Medicine": "Paracetamol", "Dosage": "2 tablets", "Frequency": "3 times a day", "Duration": "5 days"}
 
   const fetchPatient = async () => {
-    const response = await axios.get(`http://localhost:5001/api/v1/patients/cb3b7b6fb172`);
+    const response = await axios.get(`http://localhost:5001/api/v1/patients/13d1d7ac140e`);
     setPatientData(response.data.data.Patient);
 
   };

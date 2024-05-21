@@ -24,7 +24,7 @@ const PatientPortalHeader = () => {
         Create Appointment
       </a>
 
-      <a href="/patient-PortalEMR"
+      <a href="/patient-PortalEMR/13d1d7ac140e"
          style={{
           padding: '10px 20px',
           // backgroundColor: '#28a745',
