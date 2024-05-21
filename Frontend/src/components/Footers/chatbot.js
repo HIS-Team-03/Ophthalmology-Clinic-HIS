@@ -13,7 +13,7 @@ import {
 
 export default function App() {
   const [messages, setMessages] = useState([
-    { text: "Hello and thank you for visiting MDBootstrap. Please click the video below.", sender: "bot" }
+    { text: "Hello and thank you for visiting OurClinic."}
   ]);
   const [inputMessage, setInputMessage] = useState('');
   const [isOpen, setIsOpen] = useState(false);  // State to manage the visibility of the chatbot
@@ -49,6 +49,15 @@ export default function App() {
 
   return (
     <div style={{ position: 'fixed', bottom: 20, right: 20, zIndex: 1000 }}>
+      <style>
+        {`
+          .fixed-size-btn {
+            width: 80px;  // Ensures button width remains constant
+            height: 6px;
+            padding: 8px 16px;  // Consistent padding
+          }
+        `}
+        </style>
       {isOpen ? (
         <MDBCard style={{ maxWidth: '300px', borderRadius: "15px" }}>
           <MDBCardHeader
@@ -87,7 +96,7 @@ export default function App() {
               value={inputMessage}
               onChange={(e) => setInputMessage(e.target.value)}
             />
-            <MDBBtn className="mt-2" color="info" onClick={handleSendMessage}>Send</MDBBtn>
+            <MDBBtn className="mt-2 fixed-size-btn" color="info" onClick={handleSendMessage}>Send</MDBBtn>
           </div>
         </MDBCard>
       ) : (

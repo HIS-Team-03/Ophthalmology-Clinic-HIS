@@ -2,17 +2,17 @@ const mongoose = require("mongoose");
 const validator = require("validator");
 const crypto = require("crypto");
 const bcrypt = require("bcryptjs");
-const { v4: uuidv4 } = require('uuid');
-const shortid = require('shortid');
+const { v4: uuidv4 } = require("uuid");
+const shortid = require("shortid");
 const patientscheme = new mongoose.Schema({
-  _id: { 
-    type: String, 
+  _id: {
+    type: String,
     default: () => {
       const fullUuid = uuidv4();
-      return fullUuid.split('-').pop();  // Returns only the last segment of the UUID
-    }
+      return fullUuid.split("-").pop(); // Returns only the last segment of the UUID
+    },
   },
-    name: {
+  name: {
     type: String,
     required: [true, "A user must have a name"],
     maxlength: [20, "A user name must have less or equal than 20 characters"],
@@ -93,9 +93,9 @@ const patientscheme = new mongoose.Schema({
     type: String,
     required: [true, "A patient must specify their sex"],
     enum: {
-      values: ['Male', 'Female', 'Other'],
-      message: 'Sex must be either Male, Female, or Other'
-    }
+      values: ["Male", "Female", "Other"],
+      message: "Sex must be either Male, Female, or Other",
+    },
   },
   password: {
     type: String,
@@ -104,7 +104,6 @@ const patientscheme = new mongoose.Schema({
       8,
       "A patient password must have more or equal then 8 characters",
     ],
-    select: false,
   },
   confirmPassword: {
     type: String,
@@ -115,17 +114,10 @@ const patientscheme = new mongoose.Schema({
       },
       message: "Passwords are not the same",
     },
-    select: false,
   },
 });
 
 const Patient = mongoose.model("Patient", patientscheme);
-patientscheme.pre("save", async function (next) {
-  if (!this.isModified("password")) return next();
-  this.password = await bcrypt.hash(this.password, 12);
-  this.confirmPassword = undefined;
-  next();
-});
 
 // async function saveTestPatient() {
 //     try {

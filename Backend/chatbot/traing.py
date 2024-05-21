@@ -21,7 +21,7 @@ words = []
 classes = []
 documents = []
 ignore = ['?', '!', '.', ',']
-for intent in intent['intent']:
+for intent in intent['intents']:
     for pattern in intent['patterns']:
         word_list = nltk.word_tokenize(pattern) # tokenize each word in a list ["",""]
         words.extend(word_list)

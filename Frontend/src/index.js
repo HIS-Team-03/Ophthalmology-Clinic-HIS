@@ -1,4 +1,3 @@
-
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
@@ -22,11 +21,16 @@ root.render(
       {<Route path="*" element={<Navigate to="/auth/index" replace />} />}
       {<Route path="/admin/*" element={<AdminLayout />} />}
       {<Route path="/auth/*" element={<AuthLayout />} />}
-      {<Route path="/admin/EditDoctor/*" element={<DoctorEditProfile/>} />}
-      {/* {<Route path="/admin/SeeDoctor/*" element={<DoctorSeeProfile/>} />} */}  
-       { /* incomment el foo2 we balash arraf */}
-        {<Route path="/patient-dashboard" element={<PatientDashboard/>} />}
-        {<Route path="/patient-PortalEMR" element={<PatientPortalMedicalRecord/>} />}
+      {<Route path="/admin/EditDoctor/*" element={<DoctorEditProfile />} />}
+      {/* {<Route path="/admin/SeeDoctor/*" element={<DoctorSeeProfile/>} />} */}
+      {/* incomment el foo2 we balash arraf */}
+      {<Route path="/patient-dashboard/*" element={<PatientDashboard />} />}
+      {
+        <Route
+          path="/patient-PortalEMR/*"
+          element={<PatientPortalMedicalRecord />}
+        />
+      }
     </Routes>
   </BrowserRouter>
 );

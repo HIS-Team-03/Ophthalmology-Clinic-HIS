@@ -46,7 +46,7 @@ var routes = [
   },
   {
     path: "/Doctorslist",
-    name: "Doctors",
+    name: "Doctors List",
     icon: "ni ni-badge",
     component: <DoctorTable />,
     layout: "/admin",
@@ -55,13 +55,6 @@ var routes = [
     name: "Appointment",
     icon: "ni ni-calendar-grid-58",
     component: <AppTables />,
-    layout: "/admin",
-  },
-  {
-    path: "/Prescription",
-    name: "Prescription",
-    icon: "ni ni-single-copy-04",
-    component: <Tables />,
     layout: "/admin",
   },
   {
@@ -112,6 +105,13 @@ var routes = [
       icon: "",
       component: <DoctorSeeProfile />,  //sheel el arraf da lama te32al we 3adel fe file index.js
       layout: "/admin",
+    },
+    {
+      path: "/PatientsUpdate",
+      path: "/PatientsUpdate/:Patient_id",
+      component: <PatientCreateProfile type={"Update"} />,
+      layout: "/admin",
+      hidden: true  // Add this property
     },
  
 ];

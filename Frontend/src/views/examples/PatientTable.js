@@ -84,7 +84,6 @@ const deletePatient = async (id) => {
                     <th scope="col">Patient</th>
                     <th scope="col">Patient Name</th>
                     <th scope="col">Phone Number</th>
-                    <th scope="col">Doctor Name</th>
                     <th scope="col">Age</th>
                     <th scope="col">Gender</th>
                     <th scope="col">Patient ID</th>
@@ -104,7 +103,6 @@ const deletePatient = async (id) => {
                               </Link>
                           </td>
                           <td>{patient.phoneNumber}</td>
-                          <td>{patient.doctorName}</td>
                           <td>{patient.age}</td>
                           <td>{patient.sex}</td>
                           <td>{patient._id}</td>
@@ -131,10 +129,14 @@ const deletePatient = async (id) => {
                                           Delete Patient
                                       </DropdownItem>
                                       <DropdownItem
-                                          onClick={(e) => e.preventDefault()}
                                       >
-                                          <Link to={`/admin/PatientsUpdate`}>
-                                              <Button color="success " size="sm">Edit Patient</Button>
+                                        <Link to={{
+                                                pathname: `/admin/PatientsUpdate/${patient._id}`,
+                                                state: { patient }
+                                          }}>
+                                          <DropdownItem>
+                                                Update Patient
+                                          </DropdownItem>
                                           </Link>
                                       </DropdownItem>
                                   </DropdownMenu>

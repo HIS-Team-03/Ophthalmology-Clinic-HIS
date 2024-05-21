@@ -225,9 +225,6 @@ const AppProfile = () => {
                     <h3 className="mb-0">{appointmentId ? 'Update Appointment' : 'Create Appointment'}</h3>
                   </Col>
                   <Col className="text-right" xs="4">
-                    <Link to="/admin/CreateAppointment">
-                      <Button color="primary">Back</Button>
-                    </Link>
                   </Col>
                 </Row>
               </CardHeader>
