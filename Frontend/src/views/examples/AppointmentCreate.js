@@ -22,7 +22,7 @@ const AppProfile = () => {
   const location = useLocation();
   const [selectedDate, setSelectedDate] = useState(null);
   const [patientId, setPatientId] = useState("");
-  const [doctorId, setDoctorId] = useState("4");
+  const [doctorId, setDoctorId] = useState("");
   const [time, setTime] = useState("");
   const [serviceId, setServiceId] = useState("");
   const [paymentAmount, setPaymentAmount] = useState("");
@@ -30,7 +30,24 @@ const AppProfile = () => {
   const [appointmentId, setAppointmentId] = useState(null);
   const [services, setServices] = useState([]);
   const [doctors, setDoctors] = useState([]);
+  const [patients, setPatients] = useState([]);
+  const [allPatients, setAllPatients] = useState([]);
   let service;
+
+  useEffect(() => {
+    const fetchAllPatients = async () => {
+      try {
+        const response = await axios.get('http://localhost:5001/api/v1/patients');
+        const patients = response.data.data.patients; // Ensure you're accessing the correct property
+        setAllPatients(patients);
+        console.log(patients);
+      } catch (error) {
+        console.error('Error fetching all patients:', error);
+      }
+    };
+
+    fetchAllPatients();
+  }, []);
 
   useEffect(() => {
     // Fetch the list of available doctors when the component mounts
@@ -110,6 +127,20 @@ const AppProfile = () => {
         alert('Please fill all fields');
         return;
       }
+   // Check if the entered patient's first and last name exist in the database
+   let isPatientValid = false;
+   for (let i = 0; i < allPatients.length; i++) {
+     const { name } = allPatients[i];
+     if (name.toLowerCase() === patientId.toLowerCase()) {
+       isPatientValid = true;
+       break;
+     }
+   }
+   if (!isPatientValid) {
+     console.error('Invalid patient name');
+     alert('Invalid patient name');
+     return;
+   }
   
       // Format the selected date as "MM/DD/YYYY"
       const formattedDate = selectedDate.toLocaleDateString('en-US', {
@@ -160,6 +191,7 @@ const AppProfile = () => {
       alert('Error handling appointment');
     }
   };
+  
   
   
   return (
