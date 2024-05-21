@@ -238,13 +238,13 @@ const AppProfile = () => {
                       <Col lg="6">
                         <FormGroup>
                           <label className="form-control-label" htmlFor="input-patient-id">
-                            Patient ID
+                            Patient Name
                           </label>
                           <Input
                             className="form-control-alternative"
                             value={patientId}
                             onChange={(e) => setPatientId(e.target.value)}
-                            placeholder="Patient ID"
+                            placeholder="Patient Name"
                             type="text"
                             id="input-patient-id"
                           />
