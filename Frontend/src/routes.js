@@ -46,7 +46,7 @@ var routes = [
   },
   {
     path: "/Doctorslist",
-    name: "Doctors List",
+    name: "Doctors",
     icon: "ni ni-badge",
     component: <DoctorTable />,
     layout: "/admin",

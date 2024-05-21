@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Line, Bar, Pie } from 'react-chartjs-2';
+import { Bar, Pie } from 'react-chartjs-2';
 import {
   Card,
   CardHeader,
@@ -9,74 +9,67 @@ import {
   Row,
   Col,
 } from "reactstrap";
-import Chart from 'chart.js'; // Ensure Chart.js is correctly imported
-import {
-  chartOptions,
-  parseOptions,
-  chartExample1,
-  chartExample2,
-  chartExample3,
-  chartExample4
-} from "variables/charts.js";
+import Chart from 'chart.js';
+import { chartOptions, parseOptions, chartExample1, chartExample2, chartExample3, chartExample4 } from "variables/charts.js";
 import Header from "components/Headers/Header.js";
 
 const Index = () => {
-  const [activeNav, setActiveNav] = useState(1);
-  const [chartExample1Data, setChartExample1Data] = useState("data1");
-  const [serviceData, setServiceData] = useState(chartExample1.data); // State for appointment data
-  const [chartData, setChartData] = useState(chartExample2.data); // State for appointment data
-  const [ageData, setAgeData] = useState(chartExample3.data); // State for age distribution data
+  const [serviceData, setServiceData] = useState(chartExample1.data1()); 
+  const [chartData, setChartData] = useState(chartExample2.data); 
+  const [ageData, setAgeData] = useState(chartExample3.data); 
   const [genderData, setGenderData] = useState(chartExample4.data);
+
   useEffect(() => {
     if (window.Chart) {
       parseOptions(Chart, chartOptions());
     }
+    fetchAppointmentCountsByService();
     fetchAppointmentData();
     fetchAgeDistributionData();
     fetchGenderData();
-    fetchServices();
   }, []);
-  const fetchServices = async () => {
+
+  const fetchAppointmentCountsByService = async () => {
     try {
-      const response = await axios.get('http://localhost:5001/api/v1/services');
-      const servicesData = response.data.data.services;
-  
-      // Create an object to count each type of service
-      const serviceCounts = servicesData.reduce((acc, service) => {
-        // Assuming each service has a 'name' property
-        acc[service.name] = (acc[service.name] || 0) + 1;
-        return acc;
-      }, {});
-  
-      // Update the chart data
-      setServiceData({
-        labels: Object.keys(serviceCounts), // service names as labels
-        datasets: [{
-          label: 'Number of Services',
-          data: Object.values(serviceCounts), // count of each service
-          backgroundColor: Array(Object.keys(serviceCounts).length).fill('#11cdef'), // Adjust color as needed
-          hoverBackgroundColor: Array(Object.keys(serviceCounts).length).fill('#ffffff')
-        }]
-      });
+        const response = await axios.get('http://localhost:5001/api/v1/appointments');
+        const appointments = response.data.data.appointments; // Assuming the structure contains an array of appointments
+
+        // Count occurrences of each serviceId in the appointments
+        const serviceCounts = appointments.reduce((acc, appointment) => {
+            const serviceId = appointment.serviceId; // Assuming each appointment has a serviceId field
+            acc[serviceId] = (acc[serviceId] || 0) + 1;
+            return acc;
+        }, {});
+
+        // Prepare chart data using these counts
+        const chartData = {
+            labels: Object.keys(serviceCounts),
+            datasets: [{
+                label: 'Number of Appointments per Service',
+                data: Object.values(serviceCounts),
+                backgroundColor: Object.keys(serviceCounts).map(() => 'rgba(60, 100, 239, 0.5)'),
+                borderWidth: 1
+            }]
+        };
+
+        setServiceData(chartData);
     } catch (error) {
-      console.error('Error fetching services:', error);
+        console.error('Error fetching appointments:', error);
     }
-  };
-  
+};
 
   const fetchAppointmentData = async () => {
     try {
       const response = await axios.get('http://localhost:5001/api/v1/appointments');
       const appointments = response.data.data.appointments;
       const monthCounts = appointments.reduce((acc, appointment) => {
-        // Extract the month from the date string (assumes date format as 'YYYY-MM-DD')
-        const month = new Date(appointment.date).getMonth() + 1; // getMonth() returns 0-11, so add 1 for 1-12
+        const month = new Date(appointment.date).getMonth() + 1;
         acc[month] = (acc[month] || 0) + 1;
         return acc;
       }, {});
-      
+
       setChartData({
-        labels: Object.keys(monthCounts).map(month => `Month ${month}`), // Label each month
+        labels: Object.keys(monthCounts).map(month => `Month ${month}`),
         datasets: [{
           label: 'Number of Appointments per Month',
           data: Object.values(monthCounts)
@@ -86,7 +79,6 @@ const Index = () => {
       console.error('Error fetching appointment data:', error);
     }
   };
-  
 
   const fetchAgeDistributionData = async () => {
     try {
@@ -100,15 +92,15 @@ const Index = () => {
         else if (age <= 50) ageDistribution[2]++;
         else ageDistribution[3]++;
       });
-      setAgeData(prevData => ({
-        ...prevData,
-        datasets: [
-          {
-            ...prevData.datasets[0],
-            data: ageDistribution
-          },
-        ],
-      }));
+
+      setAgeData({
+        labels: ["18-34", "35-49", "50-64", "65+"],
+        datasets: [{
+          label: "Age Distribution",
+          data: ageDistribution,
+          backgroundColor: "#5e72e4"
+        }]
+      });
     } catch (error) {
       console.error('Failed to fetch and process age distribution data:', error);
     }
@@ -123,18 +115,20 @@ const Index = () => {
         if (patient.sex === 'Male') genderCounts.Male += 1;
         else if (patient.sex === 'Female') genderCounts.Female += 1;
       });
+
       setGenderData({
         labels: ['Male', 'Female'],
         datasets: [{
           data: [genderCounts.Male, genderCounts.Female],
-          backgroundColor: ['#5e72e4', '#11cdef', '#2dce89'],
-          hoverBackgroundColor: ['#324cdd', '#0da5c0', '#28b779']
+          backgroundColor: ['#5e72e4', '#11cdef'],
+          hoverBackgroundColor: ['#324cdd', '#0da5c0']
         }]
       });
     } catch (error) {
       console.error('Error fetching gender data:', error);
     }
   };
+
   return (
     <>
       <Header />
@@ -142,20 +136,26 @@ const Index = () => {
         <Row>
           <Col xl="8">
             <Row>
-              <Col xl="12">
-                <Card className="bg-gradient-default shadow">
-                <CardHeader className="bg-transparent">
-                  <h6 className="text-uppercase text-light ls-1 mb-1">Overview</h6>
-                  <h2 className="text-white mb-0">Service Usage</h2>
-                </CardHeader>
-                <CardBody>
-                  <Bar
-                    data={serviceData} // Make sure you are calling the correct data function if it's dynamic
-                    options={chartExample1.options}
-                  />
-                </CardBody>
-                </Card>
-              </Col>
+            <Col xl="12">
+                    <Card className="shadow">
+                        <CardHeader>
+                            <h3 className="mb-0">Service Analysis</h3>
+                        </CardHeader>
+                        <CardBody>
+                            <Bar data={serviceData} options={{
+                                responsive: true,
+                                maintainAspectRatio: false,
+                                scales: {
+                                    yAxes: [{
+                                        ticks: {
+                                            beginAtZero: true
+                                        }
+                                    }]
+                                }
+                            }} />
+                        </CardBody>
+                    </Card>
+                </Col>
               <Col xl="12">
                 <Card className="shadow mt-4">
                   <CardHeader className="bg-transparent">
@@ -172,17 +172,6 @@ const Index = () => {
                           labels: {
                             fontSize: 14,
                             usePointStyle: true
-                          }
-                        },
-                        tooltips: {
-                          callbacks: {
-                            label: function(tooltipItem, data) {
-                              const dataset = data.datasets[tooltipItem.datasetIndex];
-                              const total = dataset.data.reduce((previousValue, currentValue) => previousValue + currentValue);
-                              const currentValue = dataset.data[tooltipItem.index];
-                              const percentage = Math.floor(((currentValue/total) * 100) + 0.5);         
-                              return data.labels[tooltipItem.index] + ': ' + percentage + '%';
-                            }
                           }
                         }
                       }}
